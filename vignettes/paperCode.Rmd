@@ -1,0 +1,231 @@
+---
+title: "paperCode"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{paperCode}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(RCAmla)
+```
+
+This vignette holds the code used in the paper. 
+
+The following code was used to generate the stationary region.
+
+```{r, stationaryRegion, eval=F}
+set.seed(12345)
+data_sr <- simulateStationaryRegion(nSims = 10000000, silent=T)
+```
+
+```{r, loadStationaryRegion, echo=F}
+data_sr <- readRDS("~/stationaryRegion.RDS")
+```
+
+The results of the previous code is the following.
+
+```{r, plotStationaryRegion fig.cap = '\\label{fig:stationaryRegion}Stationary Region.'}
+data_sr[[3]]
+```
+
+The empirical rejection frequencies under the null was generated with the following code.
+
+```{r, empiricalRejection, eval=F}
+data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05), 
+                              varProbRates = c(0.5, 0.5),
+                              nSims=500, iterations = c(100, 200, 400, 800), 
+                              burnin = 1000, lowerEst=c(-Inf,0,10^-8,-Inf), 
+                              upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
+                              errorTypes = c('Normal','Bernoulli','Exponential'),
+                              CPLoc=0.5, nStart=NA, nEnd=NA, seed=1234,trimAmt=14)
+```
+
+```{r, loadEmpiricalRejection, echo=F}
+data_er <- readRDS("~/simTable.RDS")
+```
+
+
+The results of the previous code is the following.
+
+```{r, plotStationaryRegion fig.cap = '\\label{fig:stationaryRegion}Stationary Region.'}
+data_er[[3]]
+```
+
+The power curves were computed
+
+```{r, powerCurves, eval=F}
+tmp <- c(1, 0.9,0.75, seq(0.6,0.3,-0.1),0.25,0.1)
+U4seq <- c(tmp, 0, rev(-tmp))
+set.seed(1234)
+pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
+                  nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
+                  upperEst = rep(Inf,4), alpha = 0.05,
+                  burnin = 1000, k = 0.5 * 400, N = 400, 
+                  errorType = 'Normal', nStart = NA, nEnd = NA)
+
+set.seed(1234)
+pc2 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
+                     nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
+                     upperEst = rep(Inf,4), alpha = 0.05,
+                     burnin = 1000, kPos = 0.9, N = 400, 
+                     path = 'C:/Users/j53vande/Desktop/Data/Final/PC',
+                     fileName = 'PowerCurve_c0_a05_k9_N400_nsim500',
+                     nStart = NA, nEnd = NA,
+                     startEndMult = NA)
+
+U4seq <- c(1.05,seq(1,0.6,-0.1), 0.5, seq(0.4,0,-0.1),-0.05)
+set.seed(1234)
+pc3 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
+                     nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
+                     upperEst = rep(Inf,4), alpha = 0.05,
+                     burnin = 1000, kPos = 0.5, N = 400, 
+                     path = 'C:/Users/j53vande/Desktop/Data/Final/PC',
+                     fileName = 'PowerCurve_c05_a05_k5_N400_nsim500',
+                     nStart = NA, nEnd = NA,
+                     startEndMult = NA)
+set.seed(1234)
+pc4 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
+                     nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
+                     upperEst = rep(Inf,4), alpha = 0.05,
+                     burnin = 1000, kPos = 0.5, N = 400, 
+                     path = 'C:/Users/j53vande/Desktop/Data/Final/PC',
+                     fileName = 'PowerCurve_c05_a05_k5_N400_nsim500_etBern',
+                     errorType = 'Bernoulli',
+                     nStart = NA, nEnd = NA,
+                     startEndMult = NA)
+#saveRDS(pc1,"~/pc1.RDS")
+#saveRDS(pc2,"~/pc2.RDS")
+#saveRDS(pc3,"~/pc3.RDS")
+#saveRDS(pc4,"~/pc4.RDS")
+```
+
+```{r, loadPowerCurves, echo=F}
+pc1 <- readRDS("~/pc1.RDS")
+pc2 <- readRDS("~/pc2.RDS")
+pc3 <- readRDS("~/pc3.RDS")
+pc4 <- readRDS("~/pc4.RDS")
+```
+
+
+The results of the previous code is the following.
+
+```{r, plotPowerCurves}
+## Plot
+p1[[1]]
+p2[[1]]
+p3[[1]]
+p4[[1]]
+
+## Save data in the following manner
+#png(paste0("~/",fileName,".png"), width=1800, height=1000, res=250)
+#print(p1[[1]])
+#dev.off()
+#saveRDS(p1[[2]],file=paste0("~/",fileName,'Data.RDS'))
+```
+
+For the UK covid data
+
+```{r, UKCovidData, eval=F}
+UKCovidList <- list()
+for(nation in c('England','Northern Ireland','Scotland','Wales')){
+  
+  ## Load data
+  data <- UKcovid[UKcovid$nation==nation,c(2,3)]
+  data <- data[order(data$date),]
+  
+  ## Detect CP
+  set.seed(12345)
+  result_Vost <- binarySegmentationCPDetection(fullData=data, 
+                                       method='Vostrikova',
+                                       lower=c(-Inf, 0, 10^-8, -Inf),
+                                       upper=c(Inf, Inf, Inf, Inf),
+                                       alpha=0.05, nStart=NA, nEnd=NA,
+                                       trimAmt = 14 )
+  data_plot <- renderStackedPlot(trueData = data, 
+                     parCPData = result_Vost[,c(1:2,7:10)],
+                     title = NULL,
+                     subtitle = NULL,
+                     dataName = nation,
+                     varPlots = FALSE)
+  
+  ## Save data
+  UKCovidList <- append(UKCovidList, list(result_Vost,data_plot))
+}
+```
+
+```{r, loadUKCovidData, echo=F}
+UKCovidList <- readRDS("~/UKCovidList.RDS")
+```
+
+With plots 
+
+```{r, plotUKCovidData}
+UKCovidList[[1]][[2]]
+UKCovidList[[2]][[2]]
+UKCovidList[[3]][[2]]
+UKCovidList[[4]][[2]]
+
+## Save data
+#png(paste0('~/',nation,".png"), width = 800,height = 800)
+#print(data_plot) 
+#dev.off()
+#saveRDS(result_Vost,paste0('~/',nation,'.RDS'))
+```
+
+For the US Housing data
+
+```{r, housingData, eval=F}
+housingDataList <- list()
+for(city in c('Boston','Los Angeles')){
+  
+  ## Load data
+  data <- housing[housing$city==city,c(2,3)]
+  data <- data[order(data$date),]
+  
+  ## Detect CP
+  set.seed(12345)
+  result_Vost <- binarySegmentationCPDetection(fullData=data, 
+                                       method='Vostrikova',
+                                       lower=c(-Inf, 0, 10^-8, -Inf),
+                                       upper=c(Inf, Inf, Inf, Inf),
+                                       alpha=0.05, nStart=NA, nEnd=NA,
+                                       trimAmt = 14 )
+  
+  data_plot <- renderStackedPlot(trueData = data, 
+                     parCPData = result_Vost[,c(1:2,7:10)],
+                     title = NULL,
+                     subtitle = NULL,
+                     dataName = city,
+                     varPlots = FALSE)
+  
+  ## Save data
+  housingDataList <- append(housingDataList, list(result_Vost,data_plot))
+}
+```
+
+```{r, loadHousingData, echo=F}
+housingDataList <- readRDS("~/housingDataList.RDS")
+```
+
+With plots 
+
+```{r, plotHousingData}
+## Display data
+housingDataList[[1]][[2]]
+housingDataList[[2]][[2]]
+
+## Save data
+#png(paste0('~/',city,".png"),width = 800,height = 800)
+#print(data_plot)
+#dev.off()
+#saveRDS(result_Vost,paste0('~/',city,'.RDS'))
+```

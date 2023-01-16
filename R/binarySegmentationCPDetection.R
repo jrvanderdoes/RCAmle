@@ -173,7 +173,7 @@ binarySegmentationCPDetection <- function(fullData, method,
   nStart <- computeTrim(trimAmt,'Start',length(data))
   nEnd <- computeTrim(trimAmt,'End',length(data))
 
-  if(nStart>= nEnd) return()
+  if(nStart> nEnd) return()
 
   # Determine Method
   if(method == 'MLE'){
@@ -285,6 +285,9 @@ binarySegmentationCPDetection <- function(fullData, method,
   for(i in 1:(length(CPsVals)-2)){
     nStart <- computeTrim(trimAmt,'Start',length(data[(CPsVals[i]+1):CPsVals[i+2]]))
     nEnd <- computeTrim(trimAmt,'End',length(data[(CPsVals[i]+1):CPsVals[i+2]]))
+
+    if(nStart > nEnd) next
+
     if(is.na(var2BaseEstim))
       var2BaseEstim1 <- median( abs(data[(CPsVals[i]+1):CPsVals[i+2]] -
                                       median(data[(CPsVals[i]+1):CPsVals[i+2]])))/0.6745

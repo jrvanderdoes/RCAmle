@@ -12,8 +12,6 @@
 #'     above 0.
 #' @param upperEst  Vector of numerics indicating the upper bound for the 4
 #'     parameters.
-#' @param nStart Integer indicating starting point to check data.
-#' @param nEnd Integer indicating ending point to check data.
 #' @param alpha Numeric indicating the significance of interest.
 #' @param burnin Integer indicating the number of burnin iteration to use
 #' @param k Integer indicating the point at when the process should change from
@@ -33,6 +31,7 @@
 #' @param par2HetereoMult (Optional) This can be used to allow
 #'     hetereoskedasticity in the par2 (3rd term in pars) error. This determines
 #'     the amount to multiply par2 by for it.
+#' @param trimAmt (Optional) Numeric indicating amount to trim. Default is 4.
 #' @param silent (Optional) Boolean indicating if progress should be output.
 #'     Default is FALSE
 #'
@@ -49,17 +48,15 @@
 #'                   upperEst = rep(Inf,4), alpha = 0.05,
 #'                   burnin = 1000, k = 0.5 * 400, N = 400,
 #'                   errorType = 'Normal', nStart = NA, nEnd = NA)
-simulatePowerCurve <- function(Us3, U4s, nSims,
-                       lowerEst, upperEst,
-                       nStart, nEnd, alpha, burnin,
-                       k, N,
+simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
+                       alpha, burnin, k, N,
                        errorType = 'Normal',
                        par1HetereoLocation=NA, par1HetereoMult=NA,
                        par2HetereoLocation=NA, par2HetereoMult=NA,
-                       silent=FALSE){
+                       trimAmt=4, silent=FALSE){
 
-  nStart <- ifelse(is.na(nStart), computeTrim(14,'Start'), nStart)
-  nEnd <- ifelse(is.na(nEnd), computeTrim(14,'End',N), nEnd)
+  nStart <- computeTrim(trimAmt,'Start', N)
+  nEnd <- computeTrim(trimAmt,'End',N)
 
   if(is.na(par1HetereoLocation) && is.na(par1HetereoMult) &&
      is.na(par2HetereoLocation) && is.na(par2HetereoMult)){

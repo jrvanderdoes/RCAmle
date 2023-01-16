@@ -11,10 +11,6 @@
 #'     be negative and the third term must also be above 0.
 #' @param upper Vector of numerics indicating the upper bound.
 #' @param alpha Numeric indicating the significance of interest.
-#' @param nStart (Optional) Integer indicating starting point to check data.
-#'     Default results in minimal trimming (4 for params).
-#' @param nEnd (Optional) Integer indicating ending point to check data.
-#'     Default results in minimal trimming (4 for params).
 #' @param estimVarLS (Optional) Boolean to indicate if we should use LS to
 #'     estimate var2. Default is FALSE.
 #' @param var1BaseEstim (Optional) Numeric indicating base var1 estimate. Default
@@ -44,7 +40,7 @@
 #'                               upper=c(Inf,Inf,Inf,Inf), alpha=0.05)
 binarySegmentationCPDetection <- function(fullData, method,
                                   lower, upper,
-                                  alpha, nStart=NA,nEnd=NA,
+                                  alpha,
                                   estimVarLS=FALSE,
                                   var1BaseEstim = 0.5,
                                   var2BaseEstim = NA,
@@ -61,7 +57,7 @@ binarySegmentationCPDetection <- function(fullData, method,
   if(!silent) cat('\n--Find CPs --\n')
   CPsVals <- .detectChangePoints(data=onlyData, method=method,
                                 lower=lower, upper=upper,
-                                alpha=alpha,nStart=nStart, nEnd=nEnd,
+                                alpha=alpha,
                                 estimVarLS=estimVarLS,
                                 var1BaseEstim = var1BaseEstim,
                                 var2BaseEstim = var2BaseEstim,
@@ -77,7 +73,7 @@ binarySegmentationCPDetection <- function(fullData, method,
     CPsVals <- .verifyChangePoints(CPsVals=CPsVals, data=onlyData,
                       method=method,
                       lower=lower, upper=upper,
-                      alpha=alpha, nStart=nStart, nEnd=nEnd,
+                      alpha=alpha,
                       estimVarLS=estimVarLS,
                       var1BaseEstim = var1BaseEstim,
                       var2BaseEstim = var2BaseEstim,
@@ -143,10 +139,6 @@ binarySegmentationCPDetection <- function(fullData, method,
 #'     be negative and the third term must also be above 0.
 #' @param upper Vector of numerics indicating the upper bound.
 #' @param alpha Numeric indicating the significance of interest.
-#' @param nStart (Optional) Integer indicating starting point to check data.
-#'     Default results in minimal trimming (4 for params).
-#' @param nEnd (Optional) Integer indicating ending point to check data.
-#'     Default results in minimal trimming (4 for params).
 #' @param addAmt (Optional) Numeric to add to CPs so can use this function
 #'     recursively.
 #' @param estimVarLS (Optional) Boolean to indicate if we should use LS to
@@ -167,7 +159,7 @@ binarySegmentationCPDetection <- function(fullData, method,
 #' # This is an internal function. See use in binarySegmentationCPDetection.
 .detectChangePoints <-  function(data, method,
                                 lower, upper,
-                                alpha, nStart=NA,nEnd=NA,
+                                alpha,
                                 addAmt = 0,
                                 estimVarLS=FALSE, var1BaseEstim = 0.5,
                                 var2BaseEstim = 0.5,
@@ -178,8 +170,8 @@ binarySegmentationCPDetection <- function(fullData, method,
   sendVar2 <- var2BaseEstim
   if(is.na(var2BaseEstim)) var2BaseEstim <- median( abs(data - median(data)))/0.6745
 
-  nStart <- ifelse(is.na(nStart), computeTrim(trimAmt,'Start'), nStart)
-  nEnd <- ifelse(is.na(nEnd), computeTrim(trimAmt,'End',length(data)), nEnd)
+  nStart <- computeTrim(trimAmt,'Start',length(data))
+  nEnd <- computeTrim(trimAmt,'End',length(data))
 
   if(nStart>= nEnd) return()
 
@@ -225,16 +217,6 @@ binarySegmentationCPDetection <- function(fullData, method,
   if(!silent) cat(paste0('ChangePoint Detected (',1+addAmt,'-' ,addAmt+length(data),' at ',
                          addAmt+result[3],'): Segment Data and Re-Search\n'))
 
-  wls <- .WLSestimate(y=data,
-                     k=length(data),
-                     lower=lower, upper=upper)
-  mle <- c(.estimateMaxLikelihood(y=data,
-                         k=length(data),
-                         estimates=c(wls[1],
-                                     var1BaseEstim,
-                                     var2BaseEstim),
-                         lower=lower, upper=upper),NA)
-
   return(c(
     .detectChangePoints(data=data[1:result[3]],
                        method=method,
@@ -252,13 +234,13 @@ binarySegmentationCPDetection <- function(fullData, method,
                        method=method,
                        lower=lower, upper=upper,
                        alpha=alpha,
-                       addAmt = addAmt+result[3]-1,
+                       addAmt = addAmt+result[3],
                        estimVarLS=estimVarLS,
                        var1BaseEstim = var1BaseEstim,
                        var2BaseEstim = sendVar2,
                        maxOptimIters = maxOptimIters,
                        trimAmt=trimAmt,
-                       silent=silent)+result[3]-1))
+                       silent=silent)+result[3]))
 
 }
 
@@ -272,8 +254,6 @@ binarySegmentationCPDetection <- function(fullData, method,
 #'     be negative and the third term must also be above 0.
 #' @param upper Vector of numerics indicating the upper bound.
 #' @param alpha Numeric indicating the significance of interest.
-#' @param nStart Integer indicating starting point to check data.
-#' @param nEnd Integer indicating ending point to check data.
 #' @param estimVarLS Boolean to indicate if we should use LS to estimate var2.
 #' @param var1BaseEstim Numeric indicating base var1 estimate.
 #' @param var2BaseEstim Numeric indicating base var1 estimate.
@@ -289,31 +269,69 @@ binarySegmentationCPDetection <- function(fullData, method,
 .verifyChangePoints <- function(CPsVals, data,
                    method,
                    lower, upper,
-                   alpha, nStart, nEnd,
+                   alpha,
                    estimVarLS,
                    var1BaseEstim,
                    var2BaseEstim,
                    maxOptimIters,
                    trimAmt,
-                   silent=silent){
+                   silent=F){
 
   newCPVals <- c()
+  var2BaseEstim1 <- var2BaseEstim
+  # For no CP, i.e. c(0,length(data))
+  if(length(CPsVals)==2) CPsVals <- c(CPsVals,length(data))
 
   for(i in 1:(length(CPsVals)-2)){
-    tmp <- .detectChangePoints(data = data[(CPsVals[i]+1):CPsVals[i+2]],
-                              method=method,
-                              lower=lower, upper=upper,
-                              alpha=alpha, nStart=nStart, nEnd=nEnd,
-                              addAmt = CPsVals[i],
-                              estimVarLS=estimVarLS,
-                              var1BaseEstim = var1BaseEstim,
-                              var2BaseEstim = var2BaseEstim,
-                              maxOptimIters = maxOptimIters,
-                              trimAmt = trimAmt,
-                              silent=silent)
+    nStart <- computeTrim(trimAmt,'Start',length(data[(CPsVals[i]+1):CPsVals[i+2]]))
+    nEnd <- computeTrim(trimAmt,'End',length(data[(CPsVals[i]+1):CPsVals[i+2]]))
+    if(is.na(var2BaseEstim))
+      var2BaseEstim1 <- median( abs(data[(CPsVals[i]+1):CPsVals[i+2]] -
+                                      median(data[(CPsVals[i]+1):CPsVals[i+2]])))/0.6745
 
-    newCPVals <- c(newCPVals, tmp+CPsVals[i])
+    # Determine Method
+    if(method == 'MLE'){
+      result <-
+        MLEIndicator(u= rep(NA,4), data[(CPsVals[i]+1):CPsVals[i+2]],
+                     lower=lower, upper=upper,
+                     alpha = alpha,
+                     nStart = nStart, nEnd=nEnd,
+                     returnEstims = FALSE,
+                     estimVarLS=estimVarLS,
+                     var1BaseEstim = var1BaseEstim,
+                     var2BaseEstim = var2BaseEstim1,
+                     maxOptimIters = maxOptimIters)
+
+    } else if(method == 'Vostrikova'){
+      result <-
+        MLEVostIndicator(u= rep(NA,4), data[(CPsVals[i]+1):CPsVals[i+2]],
+                         lower=lower, upper=upper,
+                         alpha = alpha,
+                         nStart = nStart, nEnd=nEnd,
+                         returnEstims = FALSE,
+                         estimVarLS=estimVarLS,
+                         var1BaseEstim = var1BaseEstim,
+                         var2BaseEstim = var2BaseEstim1,
+                         maxOptimIters = maxOptimIters)
+    } else if(method == 'WLS'){
+      result <-
+        WLSIndicator(y=data[(CPsVals[i]+1):CPsVals[i+2]],
+                     N=length(data[(CPsVals[i]+1):CPsVals[i+2]],),
+                     alpha = alpha)
+    } else {
+      stop('Incorrect Method specified')
+    }
+
+    if(!(is.na(result[1]) || is.na(result[2]) || result[1] <= result[2])){
+      if(!silent) {
+        cat(paste0('ChangePoint Detected (',1+CPsVals[i],'-' ,
+                   CPsVals[i]+length(data[(CPsVals[i]+1):CPsVals[i+2]]),
+                   ' at ',CPsVals[i]+result[3], '): Segment Data and Re-Search\n'))
+      }
+
+      newCPVals <- c(newCPVals, result[3]+CPsVals[i])
+    }
   }
 
-  newCPVals
+  c(0,newCPVals,length(data))
 }

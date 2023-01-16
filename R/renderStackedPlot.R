@@ -154,10 +154,10 @@ renderStackedPlot <- function(trueData, parCPData, title, subtitle,
       ggplot2::ggplot() +
       ggplot2::geom_line(ggplot2::aes(x=Date, y=Value, col=dataName,
                                       linetype=dataName), trueData,
-                key_glyph = "path") +
+                key_glyph = "path",size=1) +
       ggplot2::geom_vline(ggplot2::aes(xintercept=parCPData$st[-1], col='CPs',
                                        linetype='CPs'),
-                 key_glyph = 'blank') +
+                 key_glyph = 'blank',size=1) +
       ggplot2::geom_blank(ggplot2::aes(col='beta', linetype='beta'),
                  key_glyph = "blank") +
       ggplot2::theme_bw() +
@@ -167,7 +167,7 @@ renderStackedPlot <- function(trueData, parCPData, title, subtitle,
       ggplot2::theme(legend.position = 'none') +
       ggplot2::scale_colour_manual(name = "Method:",
                           labels = c('beta',"CPs",dataName),#c('beta',dataName,"CPs"),
-                          values = c(colors[c(1,5)],'black')) +#c('black','black','red')) +
+                          values = c('black','red','black')) +#c(colors[c(1,5)],'black')) +
       ggplot2::scale_linetype_manual(name = "Method:",
                             labels = c('beta','CPs', dataName),#c('beta',dataName,"CPs"),
                             values = c('solid', 'dashed',"solid"))#xxx
@@ -176,10 +176,10 @@ renderStackedPlot <- function(trueData, parCPData, title, subtitle,
       ggplot2::ggplot() +
       ggplot2::geom_segment(ggplot2::aes(x = st, y = b1, xend = en, yend = b1,
                        colour = "beta",  linetype='beta'), data = parCPData,
-                   key_glyph = "path") +
+                   key_glyph = "path",size=1) +
       ggplot2::geom_vline(ggplot2::aes(xintercept=parCPData$st[-1], col='CPs',
                                        linetype='CPs'),
-                 key_glyph = "blank") +
+                 key_glyph = "blank",size=1) +
       ggplot2::geom_blank(ggplot2::aes(col=dataName, linetype=dataName),
                  key_glyph = "blank") +
       ggplot2::theme_bw()+
@@ -189,7 +189,7 @@ renderStackedPlot <- function(trueData, parCPData, title, subtitle,
       ggplot2::theme(legend.position = 'none') +
       ggplot2::scale_colour_manual(name = "Method:",
                           labels = c('beta',"CPs",dataName),#c('beta',dataName,"CPs"),
-                          values = c(colors[c(1,5)],'black')) +#c('black','black','red')) +
+                          values = c('black','red','black')) +#c(colors[c(1,5)],'black')) +
       ggplot2::scale_linetype_manual(name = "Method:",
                             labels = c('beta','CPs', dataName),#c('beta',dataName,"CPs"),
                             values = c('solid', 'dashed',"solid"))#xxx

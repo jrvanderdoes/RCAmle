@@ -17,7 +17,7 @@
 #'             Very fast, but likely will have memory issues on most machines
 #'             for large nSims
 #'     }
-#' @param silent (Optional) Boolean indicating if output should be supressed (T).
+#' @param silent (Optional) Boolean indicating if output should be suppressed (T).
 #'     Default is FALSE.
 #'
 #' @return List with data.frame of date, (opt) data.frame of edge information,

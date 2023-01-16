@@ -35,6 +35,7 @@
 #' @param par2HetereoMult (Optional) This can be used to allow
 #'     hetereoskedasticity in the par2 (3rd term in pars) error. This determines
 #'     the amount to multiply par2 by for it.
+#' @param silent (Optional) Boolean indicating if output is requested
 #'
 #' @return Vector with the sequence of RCA data of length iterations according
 #'     to the params
@@ -56,7 +57,8 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
                          stationarySims = 10000,
                          stationaryCutoff = -0.01,
                          par1HetereoLocation=NA, par1HetereoMult=NA,
-                         par2HetereoLocation=NA, par2HetereoMult=NA){
+                         par2HetereoLocation=NA, par2HetereoMult=NA,
+                         silent=F){
   ## Setup
   par1HetereoLIters <- par1HetereoLocation * iterations
   par2HetereoLIters <- par2HetereoLocation * iterations
@@ -66,7 +68,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
     ## Check for stationary
     if(.checkNonStationary(pars, stationarySims, stationaryCutoff)){
       burnin <- 0
-      warning("Model nonstationary - No burnin used")
+      if(!silent) warning("Model nonstationary - No burnin used")
     }
 
     ## Model Data Generations
@@ -86,7 +88,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 
   }else{
     ## Check for stationary
-    warning("Cannot verify stationarity for this error type")
+    if(!silent) warning("Cannot verify stationarity for this error type")
 
     ## Model Data Generations
     H1 <- .dataGen(pars=pars[c(1,2,3)], burnin=burnin, iterations=k,

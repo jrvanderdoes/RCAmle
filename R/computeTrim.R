@@ -4,7 +4,8 @@
 #' This is just a function to control how much is trimmed
 #'
 #' @param requireDrops Integer indicating the number of require dropped. Ensure
-#'     this is at least enough to estimate the parameters
+#'     this is at least enough to estimate the parameters. If NA, use log(N)
+#'     for trim (min of 4)
 #' @param type String of Start or End. This indicates if this is the start or
 #'     ending trim
 #' @param N (Optional) Integer of the length of data. Needed if type='End'
@@ -17,20 +18,13 @@
 #' computeTrim(10,'Start')
 #' computeTrim(10,'End',100)
 computeTrim <- function(requireDrops,type,N=NA){
-
-  # if(is.na(mult)){
-  if(type=='Start')
+  if(type=='Start'){
+    if(is.na(requireDrops))
+      return(max(4,ceiling(log(N)))+1)
     return(requireDrops+1)
-  else if(type=='End')
+  }else if(type=='End'){
+    if(is.na(requireDrops))
+      return(min(N-4,N-ceiling(log(N))))
     return(N-requireDrops)
-  # }
-  # else{
-  #   if(type=='Start'){
-  #     if(!is.na(N))
-  #       return(max(log(N),length(pars)*mult+1))
-  #     return(length(pars)*mult+1)
-  #   }else if(type=='End'){
-  #     return(min(N-log(N), N-length(pars)*mult))
-  #   }
-  # }
+  }
 }

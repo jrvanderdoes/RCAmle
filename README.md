@@ -1,4 +1,4 @@
-# RCAmlr
+# RCAmle
 
 This is a package examining change point in RCA(1) model. See our paper.
 
@@ -9,5 +9,5 @@ You can install the development version of funkycells from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jrvanderdoes/RCAmlr")
+devtools::install_github("jrvanderdoes/RCAmle")
 ```

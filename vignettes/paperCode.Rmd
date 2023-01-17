@@ -45,7 +45,7 @@ data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
                               burnin = 1000, lowerEst=c(-Inf,0,10^-8,-Inf), 
                               upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
                               errorTypes = c('Normal','Bernoulli','Exponential'),
-                              CPLoc=0.5, nStart=NA, nEnd=NA, seed=1234,trimAmt=14)
+                              CPLoc=0.5, seed=1234,trimAmt=10)
 ```
 
 
@@ -76,15 +76,14 @@ pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
                   upperEst = rep(Inf,4), alpha = 0.05,
                   burnin = 1000, k = 0.5 * 400, N = 400, 
                   errorType = 'Normal',
-                  trimAmt=14)
+                  trimAmt=10)
 
 set.seed(1234)
 pc2 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
                      burnin = 1000, kPos = 0.9 * 400, N = 400, 
-                     errorType = 'Normal',
-                     trimAmt=14)
+                     errorType = 'Normal', trimAmt=10)
 
 U4seq <- c(1.05,seq(1,0.6,-0.1), 0.5, seq(0.4,0,-0.1),-0.05)
 set.seed(1234)
@@ -92,15 +91,13 @@ pc3 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
                      burnin = 1000, kPos = 0.5 * 400, N = 400, 
-                     errorType = 'Normal',
-                     trimAmt=14)
+                     errorType = 'Normal', trimAmt=10)
 set.seed(1234)
 pc4 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
                      burnin = 1000, kPos = 0.5 * 400, N = 400,
-                     errorType = 'Bernoulli',
-                     trimAmt=14)
+                     errorType = 'Bernoulli', trimAmt=10)
 ```
 
 
@@ -143,7 +140,7 @@ for(city in c('Boston','LosAngeles')){
                                        lower=c(-Inf, 0, 10^-8, -Inf),
                                        upper=c(Inf, Inf, Inf, Inf),
                                        alpha=0.05, nStart=NA, nEnd=NA,
-                                       trimAmt = 14, silent = T )
+                                       trimAmt = 10, silent = T )
   
   data_plot <- renderStackedPlot(trueData = data, 
                      parCPData = result_Vost[,c(1:2,7:10)],
@@ -192,7 +189,7 @@ for(nation in c('England','Northern Ireland','Scotland','Wales')){
                                        lower=c(-Inf, 0, 10^-8, -Inf),
                                        upper=c(Inf, Inf, Inf, Inf),
                                        alpha=0.05,
-                                       trimAmt = 14, silent = T )
+                                       trimAmt = 10, silent = T )
   data_plot <- renderStackedPlot(trueData = data, 
                      parCPData = result_Vost[,c(1:2,7:10)],
                      title = NULL,

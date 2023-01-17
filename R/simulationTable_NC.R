@@ -20,10 +20,6 @@
 #' @param errorTypes Vector indicating the errorTypes to investigate. Options
 #'     are 'Normal', 'Bernoulli', and 'Exponential'.
 #' @param CPLoc Numeric indicating change point location, between 0 and 1.
-#' @param nStart (Optional) Integer indicating starting point to check data.
-#'     Default results in minimal trimming (4 for params).
-#' @param nEnd (Optional) Integer indicating ending point to check data.
-#'     Default results in minimal trimming (4 for params).
 #' @param seed (Optional) Integer to indicate seed to set at each interation.
 #'     Default of NA sets no seed.
 #' @param silent (Optional) Boolean indicating if progress should be output.
@@ -39,10 +35,10 @@
 #'                               burnin = 1000, lowerEst=c(-Inf,0,10^-8,-Inf),
 #'                               upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
 #'                               errorTypes = c('Normal','Bernoulli','Exponential'),
-#'                               CPLoc=0.5, nStart=NA, nEnd=NA, seed=1234)
+#'                               CPLoc=0.5, seed=1234)
 simulationTable_NC <- function(betas, varProbRates, nSims, iterations, burnin,
                                lowerEstim, upperEstim, alpha, errorTypes,
-                               CPLoc=0.5, nStart=NA, nEnd=NA, seed=NA, silent=F,
+                               CPLoc=0.5, seed=NA, silent=F,
                                trimAmt = 4){
 
   sol <- expand.grid(

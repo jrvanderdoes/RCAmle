@@ -1,6 +1,7 @@
 ---
-title: "paperCode"
+title: "Accompanying Paper Code"
 output: rmarkdown::html_vignette
+#output: pdf_document
 vignette: >
   %\VignetteIndexEntry{paperCode}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,15 +13,26 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE) 
 ```
 
-```{r setup}
-library(RCAmla)
+```{r setup, echo=F}
+suppressWarnings(suppressMessages(library(RCAmle)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(kableExtra)))
+suppressWarnings(suppressMessages(library(patchwork)))
+
+## Save plots
+#png(paste0("~/",fileName,".png"), width=1800, height=1000, res=250)
+#png(paste0("~/",fileName,".png"), width=800, height=800, res=250) # Delete
+#print(data)
+#dev.off()
 ```
 
 This vignette is a companion to the paper `The maximally selected likelihood 
 ratio test in random coefficient models.' The code to build all figures in that
-paper are presented.
+paper are presented. Discussions on these figures are conducted in the paper and
+are not addressed in this data supplement.
 
 The stationary region was built using the following code.
 ```{r, stationaryRegion, eval=F}
@@ -28,14 +40,15 @@ set.seed(12345)
 data_sr <- simulateStationaryRegion(nSims = 10000000, silent=T)
 ```
 
-The results of that code includes Figure \ref{fig:stationaryRegion}.
+The results of that code includes the following figure.
 ```{r, loadStationaryRegion, echo=F}
-data_sr <- readRDS("./data-paper/stationaryRegion.RDS")
+data_sr <- readRDS("./data-paper/data_sr.rds")
 ```
 
-```{r, plotStationaryRegion fig.cap = '\\label{fig:stationaryRegion}Simulation stationary region using Gaussian error based on $E\\log |\\beta + \\epsilon_{0,1} |$'}
+```{r, plotStationaryRegion, fig.cap = "Simulation stationary region using Gaussian error based on $E\\log |\\beta + \\epsilon_{0,1} |$",fig.width = 5.5}
 data_sr[[3]]
 ```
+
 
 The empirical rejection frequencies under the null case was generated using the following code.
 ```{r, empiricalRejection, eval=F}
@@ -48,13 +61,12 @@ data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
                               CPLoc=0.5, seed=1234,trimAmt=10)
 ```
 
-
-The results of that code can be used to create Table \ref{tab:empiricalRejection}.
+The results of that code is the following data.
 ```{r, loadEmpiricalRejection, echo=F}
-data_er <- readRDS("./data-paper/simTable.RDS")
+data_er <- readRDS("./data-paper/data_er.RDS")
 ```
 
-```{r, tableStationaryRegion}
+```{r, tableStationaryRegion, fig.cap='Empiracal rejection frequencies under the null.'}
 data_er$errType <- ifelse(data_er$errType=='Normal','N',
                           ifelse(data_er$errType=='Bernoulli','B','E'))
 tmp <- data_er %>%
@@ -65,66 +77,61 @@ kable(tmp[,!(colnames(tmp)%in%c('beta'))], booktabs = TRUE) %>%
   pack_rows(index = table(tmp$beta))
 ```
 
-The power curves were built using the following code.
 
+The power curves were built using the following code.
 ```{r, powerCurves, eval=F}
 tmp <- c(1, 0.9,0.75, seq(0.6,0.3,-0.1),0.25,0.1)
 U4seq <- c(tmp, 0, rev(-tmp))
 set.seed(1234)
 pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
-                  nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
-                  upperEst = rep(Inf,4), alpha = 0.05,
-                  burnin = 1000, k = 0.5 * 400, N = 400, 
-                  errorType = 'Normal',
-                  trimAmt=10)
+                     nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
+                     upperEst = rep(Inf,4), alpha = 0.05,
+                     burnin = 1000, k = 0.5 * 400, N = 400, 
+                     errorType = 'Normal', trimAmt=10,
+                     silent=T)
 
 set.seed(1234)
 pc2 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
-                     burnin = 1000, kPos = 0.9 * 400, N = 400, 
-                     errorType = 'Normal', trimAmt=10)
+                     burnin = 1000, k = 0.9 * 400, N = 400, 
+                     errorType = 'Normal', trimAmt=10,
+                     silent=T)
 
 U4seq <- c(1.05,seq(1,0.6,-0.1), 0.5, seq(0.4,0,-0.1),-0.05)
 set.seed(1234)
 pc3 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
-                     burnin = 1000, kPos = 0.5 * 400, N = 400, 
-                     errorType = 'Normal', trimAmt=10)
+                     burnin = 1000, k = 0.5 * 400, N = 400, 
+                     errorType = 'Normal', trimAmt=10,
+                     silent=T)
 set.seed(1234)
 pc4 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
                      nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf), 
                      upperEst = rep(Inf,4), alpha = 0.05,
-                     burnin = 1000, kPos = 0.5 * 400, N = 400,
-                     errorType = 'Bernoulli', trimAmt=10)
+                     burnin = 1000, k = 0.5 * 400, N = 400,
+                     errorType = 'Bernoulli', trimAmt=10,
+                     silent=T)
 ```
 
-
-The results of that code includes Figure \ref{fig:powerCurves}.
+The resulting power figures are as follows (See the paper for details on each of the figures).
 ```{r, loadPowerCurves, echo=F}
 pc1 <- readRDS("./data-paper/pc1.RDS")
 pc2 <- readRDS("./data-paper/pc2.RDS")
 pc3 <- readRDS("./data-paper/pc3.RDS")
 pc4 <- readRDS("./data-paper/pc4.RDS")
-
-## Save plots
-#png(paste0("~/",fileName,".png"), width=1800, height=1000, res=250)
-#print(p1[[1]])
-#dev.off()
-#saveRDS(p1[[2]],file=paste0("~/",fileName,'Data.RDS'))
 ```
 
-```{r, plotPowerCurves fig.cap = '\\label{fig:powerCurves}Power curves as a function of the change in RCA coefficient.'}
-p1[[1]]
-p2[[1]]
-p3[[1]]
-p4[[1]]
+```{r, plotPowerCurves, fig.cap = 'Power curves as a function of the change in RCA coefficient.',fig.width = 5.5}
+pc1[[1]]
+pc2[[1]]
+pc3[[1]]
+pc4[[1]]
 ```
 
 
 The US housing figures were built using the following code.
-
 ```{r, housingData, eval=F}
 housingDataList <- list()
 for(city in c('Boston','LosAngeles')){
@@ -146,7 +153,6 @@ for(city in c('Boston','LosAngeles')){
                      parCPData = result_Vost[,c(1:2,7:10)],
                      title = NULL,
                      subtitle = NULL,
-                     dataName = city,
                      varPlots = FALSE)
   
   ## Save data
@@ -154,26 +160,20 @@ for(city in c('Boston','LosAngeles')){
 }
 ```
 
-
-The results of that code includes Figure \ref{fig:Housing}.
+The results were as follows.
 ```{r, loadHousingData, echo=F}
-housingDataList <- readRDS("./data-paper/housingDataList.RDS")
-
-## Save plots
-#png(paste0('~/',city,".png"),width = 800,height = 800)
-#print(data_plot)
-#dev.off()
-#saveRDS(result_Vost,paste0('~/',city,'.RDS'))
+housingDataList <- readRDS("./data-paper/housingDataList.rds")
 ```
 
-```{r, plotHousingData fig.cap = '\\label{fig:Housing}Daily US housing price indices.'}
+```{r, plotHousingData_Boston, fig.cap = 'Daily US housing price indices in Boston.',fig.width = 5.5}
 housingDataList[[1]][[2]]
+```
+```{r, plotHousingData_LA, fig.cap = 'Daily US housing price indices in Los Angeles.',fig.width = 5.5}
 housingDataList[[2]][[2]]
 ```
 
 
-The UK covid figures were built using the following code.
-
+The UK covid-19 figures were built using the subsequent code.
 ```{r, UKCovidData, eval=F}
 UKCovidList <- list()
 for(nation in c('England','Northern Ireland','Scotland','Wales')){
@@ -194,7 +194,6 @@ for(nation in c('England','Northern Ireland','Scotland','Wales')){
                      parCPData = result_Vost[,c(1:2,7:10)],
                      title = NULL,
                      subtitle = NULL,
-                     dataName = nation,
                      varPlots = FALSE)
   
   ## Save data
@@ -202,22 +201,20 @@ for(nation in c('England','Northern Ireland','Scotland','Wales')){
 }
 ```
 
-
-The results of that code includes Figure \ref{fig:UKCovid}.
-
+With plots produced as follows.
 ```{r, loadUKCovidData, echo=F}
 UKCovidList <- readRDS("./data-paper/UKCovidList.RDS")
-
-## Save plots
-#png(paste0('~/',nation,".png"), width = 800,height = 800)
-#print(data_plot) 
-#dev.off()
-#saveRDS(result_Vost,paste0('~/',nation,'.RDS'))
 ```
 
-```{r, plotUKCovidData fig.cap = '\\label{fig:UKCovid}Daily Covid-19 patients hospitalised.'}
+```{r, plotUKCovidData_England, fig.cap = 'Daily Covid-19 patients hospitalised in England.',fig.width = 5.5}
 UKCovidList[[1]][[2]]
+```
+```{r, plotUKCovidData_NIreland, fig.cap = 'Daily Covid-19 patients hospitalised in Northern Ireland.',fig.width = 5.5}
 UKCovidList[[2]][[2]]
+```
+```{r, plotUKCovidData_Scotland, fig.cap = 'Daily Covid-19 patients hospitalised in Scotland.',fig.width = 5.5}
 UKCovidList[[3]][[2]]
+```
+```{r, plotUKCovidData_Wales, fig.cap = 'Daily Covid-19 patients hospitalised in Wales.',fig.width = 5.5}
 UKCovidList[[4]][[2]]
 ```

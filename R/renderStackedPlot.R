@@ -11,7 +11,6 @@
 #'     fifth is variance2.
 #' @param title String to be title of the plot
 #' @param subtitle String to be subtitle of the plot
-#' @param dataName String to give name for coloring
 #' @param varPlots (Optional) Boolean to indicate if variance plots should also
 #'     be built. Default is TRUE.
 #'
@@ -33,10 +32,11 @@
 #'                         title = NULL, subtitle = NULL,
 #'                         dataName = nation, varPlots = FALSE)
 renderStackedPlot <- function(trueData, parCPData, title, subtitle,
-                        dataName, varPlots = TRUE){
+                              varPlots = TRUE){
   ## Setup Data
   colnames(trueData) <-  c('Date','Value')
   colnames(parCPData) <- c('st','en','b1','v1','v2')
+  dataName <- 'ZZ' # Used to be asked, but with no displayable output, changed
 
 
   colors <- RColorBrewer::brewer.pal(5, 'Set1')

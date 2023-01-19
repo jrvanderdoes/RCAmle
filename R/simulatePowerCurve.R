@@ -90,7 +90,8 @@ simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                         par1HetereoLocation = par1HetereoLocation,
                         par1HetereoMult = par1HetereoMult,
                         par2HetereoLocation = par2HetereoLocation,
-                        par2HetereoMult = par2HetereoMult)
+                        par2HetereoMult = par2HetereoMult,
+                        silent=silent)
 
       estims[i,] <- compute3Methods(u = c(Us3,U4), y = y,
                                     lower = lowerEst, upper = upperEst,

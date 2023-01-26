@@ -22,14 +22,14 @@
 #' @param heteroWLS (Optional) Boolean indicating if the data is hetereoskedastic.
 #'     This changes the WLS estimation. Default is FALSE.
 #'
-#' @return
-#' @export Depends on returnEstims
+#' @return Depends on returnEstims
 #'     \itemize{
 #'         \item If true: List with element 1 being the WLS estimates, element
 #'             2 being the MLE estimates, and element 3 being the same as if false.
 #'         \item If false: Vector with Tn estimate, WLS estimate, cutoff for MLE/WLS,
 #'             cutoff for MLE_Vost, loc of max Tn, loc of max WLS.
 #'     }
+#' @export
 #'
 #' @examples
 #' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,

@@ -1,4 +1,11 @@
-^RCAmla\.Rproj$
+^RCAmle\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
 ^LICENSE\.md$
+^doc$
+^Meta$
+^\.github$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

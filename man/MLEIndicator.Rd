@@ -67,8 +67,8 @@ sqrt Tn estimate, cutoff, location of max Tn, and LNN.
 Function to  get MLE estimates for data with the related cutoff.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 MLEIndicator(c(0.4,0.9,0.1,-0.1), data, c(-Inf,0,10^-8,-Inf),
              c(Inf,Inf,Inf,Inf))
 }

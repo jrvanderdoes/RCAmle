@@ -68,8 +68,8 @@ Function to  get MLE estimates for data with the related cutoff based on
 finite sample approximation.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 MLEVostIndicator(c(0.4,0.9,0.1,-0.1), data, c(-Inf,0,10^-8,-Inf),
              c(Inf,Inf,Inf,Inf))
 }

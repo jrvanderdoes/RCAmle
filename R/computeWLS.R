@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-#'                         iterations=1000)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+#'                         iterations=500)
 #' computeWLSVals(data)
 computeWLSVals <- function(y, N=length(y), trim=log(N)){
 
@@ -177,6 +177,8 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 
 #' Weighted Least Squares Estimate
 #'
+#' See for use example binarySegmentationCPDetection.
+#'
 #' @param y Vector of numerics for the data
 #' @param k Integer(s) location of change point. Can do this as a vector
 #' @param lower Vector of numerics indicating the lower bound. Variance cannot
@@ -184,9 +186,7 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 #' @param upper Vector of numerics indicating the upper bound.
 #'
 #' @return WLS estimates for beta1, var1, var2, beta2 at potentially different k
-#'
-#' @examples
-#' # Internal function. See for use example binarySegmentationCPDetection.
+#' @noRd
 .WLSestimate <- function(y,k, lower, upper){
 
   means <- .WLSMeansEstimate(y,k)
@@ -208,15 +208,13 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 
 #' Weighted Least Squares Mean Estimates
 #'
-#' Compute weighted least squares mean estimates.
+#' Compute weighted least squares mean estimates. See use in .WLSestimate.
 #'
 #' @param y Vector of numerics for the data
 #' @param k Integer location of change point
 #'
 #' @return Vector of two numerics indicating beta1 and beta2 estimates
-#'
-#' @examples
-#' # Internal function, see use in .WLSestimate.
+#' @noRd
 .WLSMeansEstimate <- function(y,k){
 
   N <- length(y)
@@ -265,7 +263,8 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 #' Compute weighted least squares variance estimates. See for example books like
 #'     Random Coefficient Autoregressive Models: An Introduction (Des F. Nicholls,
 #'     Barry G. Quinn) or A New Iterative Procedure for Estimation of RCA
-#'     Parameters Based on Estimating Functions (Norlli Anida Abdullah et al.)
+#'     Parameters Based on Estimating Functions (Norlli Anida Abdullah et al.).
+#'     See use in .WLSestimate.
 #'
 #' @param y List of vector of numerics of data
 #' @param changepoint Integer location of change point
@@ -273,9 +272,7 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 #'     .WLSMeansEstimate.
 #'
 #' @return Vector of two numerics indicating var1 and var2 estimates
-#'
-#' @examples
-#' # Internal function, see use in .WLSestimate.
+#' @noRd
 .WLSVarsEstim <- function(y, changepoint, means){
 
   # Helpful Defns
@@ -340,7 +337,8 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 
 #' Least Squares Variance1 Estimate
 #'
-#' This (internal) function computes the least squares estimate of variance1
+#' This (internal) function computes the least squares estimate of variance1.
+#'   See for example binarySegmentationCPDetection.
 #'
 #' @param y List of vector of data
 #' @param beta1 Numeric for beta1 estimate
@@ -348,9 +346,7 @@ computeWLSVals_Hetero <- function(y, N=length(y), trim=log(N)){
 #' @param k (Optional) Integer location of change point when beta2 is present
 #'
 #' @return Numeric indicating the var1 estimate
-#'
-#' @examples
-#' # This is an internal function. See for example binarySegmentationCPDetection.
+#' @noRd
 .LSVarestimate <- function(y, beta1, beta2=NA, k=NA){
 
   y <- unlist(y)

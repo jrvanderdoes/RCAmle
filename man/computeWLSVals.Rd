@@ -23,7 +23,7 @@ This is for homoskedastic data. This work is replication of that done
 in Horvath, Trapani 2022.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 computeWLSVals(data)
 }

@@ -58,7 +58,7 @@ This function computes the three methods (WLS, MLE, MLE_Vost). It has some
 optimization to improve speed over calling the three individual methods.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 compute3Methods(c(0.4,0.9,0.1,-0.1), data)
 }

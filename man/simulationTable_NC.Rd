@@ -61,6 +61,15 @@ Data.frame of null rejection frequencies
 This function is used to generate a table of null rejection frequencies
 }
 \examples{
+data_er <- simulationTable_NC(betas = c(0.5),
+                              varProbRates = c(0.5, 0.5),
+                              nSims=5, iterations = c(50),
+                              burnin = 1000, lowerEst=c(-Inf,0,10^-8,-Inf),
+                              upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
+                              errorTypes = c('Normal'),
+                              CPLoc=0.5)
+
+\dontrun{
 data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
                               varProbRates = c(0.5, 0.5),
                               nSims=500, iterations = c(100, 200, 400, 800),
@@ -68,4 +77,5 @@ data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
                               upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
                               errorTypes = c('Normal','Bernoulli','Exponential'),
                               CPLoc=0.5, seed=1234)
+}
 }

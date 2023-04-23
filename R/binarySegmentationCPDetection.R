@@ -33,8 +33,8 @@
 #' @export
 #'
 #' @examples
-#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-#'                         iterations=1000)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+#'                         iterations=500)
 #' binarySegmentationCPDetection(data,'Vostrikova',
 #'                               lower=c(-Inf,0,10^-8,-Inf),
 #'                               upper=c(Inf,Inf,Inf,Inf), alpha=0.05)
@@ -101,9 +101,9 @@ binarySegmentationCPDetection <- function(fullData, method,
                            list(onlyData[CPs$st[i]:CPs$en[i]]),
                            wls[i,1]),
                          ifelse(is.na(var2BaseEstim),
-                                median(
+                                stats::median(
                                   abs(onlyData[CPs$st[i]:CPs$en[i]] -
-                                        median(onlyData[CPs$st[i]:CPs$en[i]])))/0.6745,
+                                        stats::median(onlyData[CPs$st[i]:CPs$en[i]])))/0.6745,
                                 var2BaseEstim)
       )
       mle[i,] <- c(.estimateMaxLikelihood(y=onlyData[CPs$st[i]:CPs$en[i]],
@@ -132,6 +132,8 @@ binarySegmentationCPDetection <- function(fullData, method,
 
 #' Detect Change Points
 #'
+#' See use in binarySegmentationCPDetection.
+#'
 #' @param data Vector of numerics with values, pre-ordered
 #' @param method String indicating method to use for change point detection.
 #'     Options are 'MLE', 'Vostrikova' , and 'WLS'.
@@ -154,9 +156,7 @@ binarySegmentationCPDetection <- function(fullData, method,
 #'     Default is FALSE
 #'
 #' @return Vector of integers indicating the change points
-#'
-#' @examples
-#' # This is an internal function. See use in binarySegmentationCPDetection.
+#' @noRd
 .detectChangePoints <-  function(data, method,
                                 lower, upper,
                                 alpha,
@@ -168,7 +168,8 @@ binarySegmentationCPDetection <- function(fullData, method,
                                 silent = F){
   # Prepare
   sendVar2 <- var2BaseEstim
-  if(is.na(var2BaseEstim)) var2BaseEstim <- median( abs(data - median(data)))/0.6745
+  if(is.na(var2BaseEstim)) var2BaseEstim <-
+      stats::median( abs(data - stats::median(data)))/0.6745
 
   nStart <- computeTrim(trimAmt,'Start',length(data))
   nEnd <- computeTrim(trimAmt,'End',length(data))
@@ -246,6 +247,8 @@ binarySegmentationCPDetection <- function(fullData, method,
 
 #' Verify Change Points
 #'
+#' See use in binarySegmentationCPDetection.
+#'
 #' @param CPsVals Vector of integers indicating the detected change points
 #' @param data Vector of numerics indicating data values
 #' @param method String indicating method to use for change point detection.
@@ -263,9 +266,7 @@ binarySegmentationCPDetection <- function(fullData, method,
 #'     Default is FALSE
 #'
 #' @return Vector of integers indicating the change points
-#'
-#' @examples
-#' # This is an internal function. See use in binarySegmentationCPDetection.
+#' @noRd
 .verifyChangePoints <- function(CPsVals, data,
                    method,
                    lower, upper,
@@ -289,8 +290,8 @@ binarySegmentationCPDetection <- function(fullData, method,
     if(nStart > nEnd) next
 
     if(is.na(var2BaseEstim))
-      var2BaseEstim1 <- median( abs(data[(CPsVals[i]+1):CPsVals[i+2]] -
-                                      median(data[(CPsVals[i]+1):CPsVals[i+2]])))/0.6745
+      var2BaseEstim1 <- stats::median( abs(data[(CPsVals[i]+1):CPsVals[i+2]] -
+                                             stats::median(data[(CPsVals[i]+1):CPsVals[i+2]])))/0.6745
 
     # Determine Method
     if(method == 'MLE'){

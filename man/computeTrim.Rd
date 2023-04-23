@@ -2,7 +2,7 @@
 % Please edit documentation in R/computeTrim.R
 \name{computeTrim}
 \alias{computeTrim}
-\title{Compute Trim}
+\title{Compute Amount of Data to Trim}
 \usage{
 computeTrim(requireDrops, type, N = NA)
 }

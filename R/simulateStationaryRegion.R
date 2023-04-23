@@ -25,9 +25,12 @@
 #' @export
 #'
 #' @examples
-#' dat <- simulateStationaryRegion()
+#' # More sims will get a smoother region
+#' dat <- simulateStationaryRegion(nSims=100)
 simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
                                      generationTrick=NA, silent=F){
+  ## Add to remove NOTEs
+  var1 <- stable <- NULL
 
   if(!silent) cat('-- Generate Region --\n')
   if(is.na(generationTrick)){
@@ -95,7 +98,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #' Generate Stationary Region - General
 #'
 #' This (internal) function computes stationarity of region using Monte Carlo
-#'     simulation.
+#'     simulation. See use in simulateStationaryRegion.
 #'
 #' @param bSeq Vector indicating sequence of beta values to be examined
 #' @param epsSeq Vector indicating sequence of epsilon (1) values to be examined
@@ -105,9 +108,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' @return Data.frame indicating stationarity at each beta-epsilon1 value. The
 #'     columns are beta (num), var1 (num), val (num), stable (bool).
-#'
-#' @examples
-#' # This is an internal function. See use in simulateStationaryRegion.
+#' @noRd
 .generateStationaryRegion_gen <- function(bSeq, epsSeq, nSims,silent=FALSE){
 
   stationaryDF <- expand.grid(bSeq, epsSeq)
@@ -126,7 +127,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
       mean(
         log(
           abs(stationaryDF$beta[i] +
-                rnorm(nSims,mean=0,
+                stats::rnorm(nSims,mean=0,
                       sd=sqrt(stationaryDF$var1[i])))
         )
       )
@@ -150,7 +151,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' This (internal) function computes stationarity of region using Monte Carlo
 #'     simulation. This strictly uses matrices rather than loops. May have
-#'     memory issues.
+#'     memory issues. See use in simulateStationaryRegion.
 #'
 #' @param bSeq Vector indicating sequence of beta values to be examined
 #' @param epsSeq Vector indicating sequence of epsilon (1) values to be examined
@@ -158,9 +159,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' @return Data.frame indicating stationarity at each beta-epsilon1 value. The
 #'     columns are beta (num), var1 (num), val (num), stable (bool).
-#'
-#' @examples
-#' # This is an internal function. See use in simulateStationaryRegion.
+#' @noRd
 .generateStationaryRegion_memory <- function(bSeq, epsSeq, nSims){
 
   stationaryDF <- expand.grid(bSeq, epsSeq)
@@ -170,7 +169,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
   stationaryDF$val <-
     rowMeans( log(abs(stationaryDF$beta +
                         t(apply(t(sqrt(stationaryDF$var1)),
-                                2,rnorm,n=nSims,mean=0))
+                                2,stats::rnorm,n=nSims,mean=0))
     )))
 
   stationaryDF$stable <- stationaryDF$val<0
@@ -183,6 +182,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' This (internal) function computes stationarity of region using Monte Carlo
 #'     simulation. This reuses the same normals at each point to increase speed.
+#'     See use in simulateStationaryRegion.
 #'
 #' @param bSeq Vector indicating sequence of beta values to be examined
 #' @param epsSeq Vector indicating sequence of epsilon (1) values to be examined
@@ -192,9 +192,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' @return Data.frame indicating stationarity at each beta-epsilon1 value. The
 #'     columns are beta (num), var1 (num), val (num), stable (bool).
-#'
-#' @examples
-#' # This is an internal function. See use in simulateStationaryRegion.
+#' @noRd
 .generateStationaryRegion_reuse <- function(bSeq, epsSeq, nSims, silent=FALSE){
 
   stationaryDF <- expand.grid(bSeq, epsSeq)
@@ -205,7 +203,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
   percent <- floor(N/10)
   if(!silent) st <- Sys.time()
 
-  norms <- rnorm(nSims)
+  norms <- stats::rnorm(nSims)
 
   for(i in 1:N){
     ## Check for stationary
@@ -238,7 +236,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' This (internal) function computes stationarity of region using Monte Carlo
 #'     simulation. This using quantiles rather than random computing MC
-#'     simulations.
+#'     simulations. See use in simulateStationaryRegion.
 #'
 #' @param bSeq Vector indicating sequence of beta values to be examined
 #' @param epsSeq Vector indicating sequence of epsilon (1) values to be examined
@@ -248,9 +246,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' @return Data.frame indicating stationarity at each beta-epsilon1 value. The
 #'     columns are beta (num), var1 (num), val (num), stable (bool).
-#'
-#' @examples
-#' # This is an internal function. See use in simulateStationaryRegion.
+#' @noRd
 .generateStationaryRegion_theo <- function(bSeq, epsSeq, nSims, silent=F){
 
   stationaryDF <- expand.grid(bSeq, epsSeq)
@@ -261,7 +257,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
   percent <- floor(N/10)
   if(!silent) st <- Sys.time()
 
-  norms <- qnorm(seq(1/(nSims+1),1-1/(nSims+1),1/(nSims+1)))
+  norms <- stats::qnorm(seq(1/(nSims+1),1-1/(nSims+1),1/(nSims+1)))
 
   for(i in 1:N){
     ## Check for stationary
@@ -293,6 +289,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #' Generate Edge
 #'
 #' This (internal) function finds the edges of the stationary region.
+#'  See use in simulateStationaryRegion.
 #'
 #' @param data Data.frame indicating stationarity at each beta-epsilon1 value.
 #'     The columns are beta (num), var1 (num), val (num), stable (bool).
@@ -301,9 +298,7 @@ simulateStationaryRegion <- function(nSims=10000, addEdge=TRUE,
 #'
 #' @return Data,frame of data with column boundary (Bool) being bound indicating
 #'     if the beta-var1 is a boundary position
-#'
-#' @examples
-#' # This is an internal function. See use in simulateStationaryRegion.
+#' @noRd
 .generateEdge <- function(data, silent=FALSE){
   data$boundary <- FALSE
   N <- length(data$beta)

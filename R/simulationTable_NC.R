@@ -29,6 +29,15 @@
 #' @export
 #'
 #' @examples
+#' data_er <- simulationTable_NC(betas = c(0.5),
+#'                               varProbRates = c(0.5, 0.5),
+#'                               nSims=5, iterations = c(50),
+#'                               burnin = 1000, lowerEst=c(-Inf,0,10^-8,-Inf),
+#'                               upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
+#'                               errorTypes = c('Normal'),
+#'                               CPLoc=0.5)
+#'
+#' \dontrun{
 #' data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
 #'                               varProbRates = c(0.5, 0.5),
 #'                               nSims=500, iterations = c(100, 200, 400, 800),
@@ -36,6 +45,7 @@
 #'                               upperEst=c(Inf,Inf,Inf,Inf), alpha = 0.05,
 #'                               errorTypes = c('Normal','Bernoulli','Exponential'),
 #'                               CPLoc=0.5, seed=1234)
+#' }
 simulationTable_NC <- function(betas, varProbRates, nSims, iterations, burnin,
                                lowerEstim, upperEstim, alpha, errorTypes,
                                CPLoc=0.5, seed=NA, silent=F,
@@ -103,17 +113,17 @@ simulationTable_NC <- function(betas, varProbRates, nSims, iterations, burnin,
         VostEst<- sum(data[[3]]$TN>data[[3]]$cutoff_V)/nSims
         WLSEst<- sum(data[[3]]$PreVal>data[[3]]$cutoff_ML)/nSims
 
-        MLESigmaHat <- sqrt(var(data[[3]]$TN>data[[3]]$cutoff_ML))
-        VostSigmaHat<- sqrt(var(data[[3]]$TN>data[[3]]$cutoff_V))
-        WLSSigmaHat<- sqrt(var(data[[3]]$PreVal>data[[3]]$cutoff_ML))
+        MLESigmaHat <- sqrt(stats::var(data[[3]]$TN>data[[3]]$cutoff_ML))
+        VostSigmaHat<- sqrt(stats::var(data[[3]]$TN>data[[3]]$cutoff_V))
+        WLSSigmaHat<- sqrt(stats::var(data[[3]]$PreVal>data[[3]]$cutoff_ML))
 
         sol[sol$type=='MLE' &
               sol$iters == iters &
               sol$beta == beta &
               sol$errType == errorType,c('Estim','Lower','Upper')] <-
           c(round(MLEEst,4),
-            max(0,round(MLEEst+qnorm(alpha/2)*MLESigmaHat/sqrt(nSims),4)),
-            min(1,round(MLEEst-qnorm(alpha/2)*MLESigmaHat/sqrt(nSims),4))
+            max(0,round(MLEEst+stats::qnorm(alpha/2)*MLESigmaHat/sqrt(nSims),4)),
+            min(1,round(MLEEst-stats::qnorm(alpha/2)*MLESigmaHat/sqrt(nSims),4))
           )
 
         sol[sol$type=='Vost' &
@@ -121,8 +131,8 @@ simulationTable_NC <- function(betas, varProbRates, nSims, iterations, burnin,
               sol$beta == beta &
               sol$errType == errorType,c('Estim','Lower','Upper')] <-
           c(round(VostEst,4),
-            max(0,round(VostEst+qnorm(alpha/2)*VostSigmaHat/sqrt(nSims),4)),
-            min(1,round(VostEst-qnorm(alpha/2)*VostSigmaHat/sqrt(nSims),4))
+            max(0,round(VostEst+stats::qnorm(alpha/2)*VostSigmaHat/sqrt(nSims),4)),
+            min(1,round(VostEst-stats::qnorm(alpha/2)*VostSigmaHat/sqrt(nSims),4))
           )
 
         sol[sol$type=='WLS' &
@@ -130,8 +140,8 @@ simulationTable_NC <- function(betas, varProbRates, nSims, iterations, burnin,
               sol$beta == beta &
               sol$errType == errorType,c('Estim','Lower','Upper')] <-
           c(round(WLSEst,4),
-            max(0,round(WLSEst+qnorm(alpha/2)*WLSSigmaHat/sqrt(nSims),4)),
-            min(1,round(WLSEst-qnorm(alpha/2)*WLSSigmaHat/sqrt(nSims),4))
+            max(0,round(WLSEst+stats::qnorm(alpha/2)*WLSSigmaHat/sqrt(nSims),4)),
+            min(1,round(WLSEst-stats::qnorm(alpha/2)*WLSSigmaHat/sqrt(nSims),4))
           )
 
         #saveRDS(data,paste0(savePath,'/Sk-',skedast,'_beta-',beta,

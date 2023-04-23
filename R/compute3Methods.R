@@ -32,8 +32,8 @@
 #' @export
 #'
 #' @examples
-#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-#'                         iterations=1000)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+#'                         iterations=500)
 #' compute3Methods(c(0.4,0.9,0.1,-0.1), data)
 compute3Methods <- function(u, y,
                             lower=c(-Inf,0,10^-8,-Inf), upper=c(Inf,Inf,Inf,Inf),
@@ -50,7 +50,7 @@ compute3Methods <- function(u, y,
 
   # Compute WLS
   if(is.na(nStart)){
-    trim <- trimSelect(4,'Start')-1
+    trim <- computeTrim(4,'Start')-1
   }else{
     trim <- nStart-1
   }

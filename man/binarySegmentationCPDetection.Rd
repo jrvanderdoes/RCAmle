@@ -63,8 +63,8 @@ estimate using MLE), 'MLE_v2' (var2 estimate using MLE), and 'MLE_b2'
 This function uses binary segmentation to detect change points.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 binarySegmentationCPDetection(data,'Vostrikova',
                               lower=c(-Inf,0,10^-8,-Inf),
                               upper=c(Inf,Inf,Inf,Inf), alpha=0.05)

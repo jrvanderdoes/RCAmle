@@ -1,7 +1,8 @@
 
 #' Compute Cutoff
 #'
-#' An (internal) function to compute the cutoff value for the statistic of interest.
+#' An (internal) function to compute the cutoff value for the statistic of
+#'  interest. See use in compute3Methods.
 #'
 #' @param alpha Numeric indicating the significance of interest.
 #' @param N Numeric indicating the length of data
@@ -13,10 +14,7 @@
 #'     is NA.
 #'
 #' @return Numeric indicating the cutoff value
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     compute3Methods.
+#' @noRd
 .computeCutoff <- function(alpha, N, type, nStart=NA, nEnd=NA){
 
   nStart <- ifelse(is.na(nStart),computeTrim(4,'Start'),nStart)
@@ -36,16 +34,13 @@
 
 #' General Cutoff
 #'
-#' Cutoff given in Theorem 2.1.
+#' Cutoff given in Theorem 2.1. See use in .computeCutoff.
 #'
 #' @param alpha Numeric indicating the significance of interest.
 #' @param N Numeric indicating the length of data
 #'
 #' @return Numeric indicating the cutoff value
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     .computeCutoff.
+#' @noRd
 .GeneralCutoff <- function(alpha, N){
 
   # Coeffs
@@ -65,7 +60,7 @@
 #' Vostrikova Cutoff
 #'
 #' Cufoff given in Theorem 2.1 with appropriate finite data approx dicussed in
-#'     Vostrikova.
+#'     Vostrikova. See use in .computeCutoff.
 #'
 #' @param alpha Numeric indicating the significance of interest.
 #' @param N Numeric indicating the length of data
@@ -73,10 +68,7 @@
 #' @param nEnd Numeric indicating ending value for trim.
 #'
 #' @return Numeric indicating the cutoff value
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     .computeCutoff.
+#' @noRd
 .VostrikovaCutoff <- function(alpha,N, nStart, nEnd){
 
   notDone <- TRUE
@@ -87,7 +79,7 @@
     tmp <- .findX(low, alpha = alpha, eAlpha=(N-(nEnd-nStart+1))/N)
   }
   ## P(sup U_st > x)
-  cutoff <- uniroot(f=.findX, lower=low,
+  cutoff <- stats::uniroot(f=.findX, lower=low,
                     upper=N, alpha=alpha, eAlpha=(N-(nEnd-nStart+1))/N)$root
 
   cutoff
@@ -97,17 +89,14 @@
 #' Find X
 #'
 #' This (internal) function is used to compute x as needed in Vostrikova
-#'     improvement of cutoff.
+#'     improvement of cutoff. See use in .VostrikovaCutoff.
 #'
 #' @param x Numeric x to consider
 #' @param alpha Numeric indicating the significance of interest.
 #' @param eAlpha Stardardized N^2 to handle values discussed 2.8
 #'
-#' @return Numeric indicating x value
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     .VostrikovaCutoff.
+#' @return Numeric indicating x value'
+#' @noRd
 .findX <- function(x, alpha, eAlpha){
   T <- 2*log((1-eAlpha)/eAlpha)
   alpha - ((x*exp(-x^2/2)/(2^(1/2)*sqrt(pi)))*(T-T/x^2+4/x^2))

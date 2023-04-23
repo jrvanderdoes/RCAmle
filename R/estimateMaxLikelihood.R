@@ -2,7 +2,7 @@
 #' Estimate Maximum Likelihood
 #'
 #' An (internal) function that optimizes the functions for parameters based on
-#'     the data with the changepoint.
+#'     the data with the changepoint. See use in computeTN.
 #'
 #' @param y Vector of numerics for the data
 #' @param k Integer indicating the point at when the process should change from
@@ -22,10 +22,7 @@
 #'             value using the parameters.
 #'         \item If FALSE: Vector of the estimated parameters
 #'     }
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     computeTN.
+#' @noRd
 .estimateMaxLikelihood <- function(y, k, estimates, lower, upper,
                           maxOptimIters=2, returnWithVal=FALSE){
 
@@ -35,7 +32,7 @@
   if(length(estimates)==4){
     ## If it gets an extreme value, try re-running
     while(notDone && optimIters < maxOptimIters){
-      ov <- optim(par=estimates, k=k, y=y, N=length(y),
+      ov <- stats::optim(par=estimates, k=k, y=y, N=length(y),
                   fn = .L, method = "L-BFGS-B",#"CG",
                   control = list(fnscale = -1),#'CG'
                   lower = lower,  upper = upper)
@@ -57,7 +54,7 @@
 
     ## If it gets an extreme value, try re-running
     while(notDone && optimIters < maxOptimIters){
-      ov <- optim(par=estimates, y=y,
+      ov <- stats::optim(par=estimates, y=y,
                   fn = function(u,y){sum(.l(y, c(u[1], u[2], u[3])))},
                   method = "L-BFGS-B",#"CG",
                   control = list(fnscale = -1),
@@ -82,7 +79,8 @@
 #' Estimate Maximum Likelihood - Array
 #'
 #' An (internal) function that optimizes the functions for parameters based on
-#'     the data with the changepoint. Organizes to use as array for speed.
+#'     the data with the changepoint. Organizes to use as array for speed. See
+#'     use in computeTN.
 #'
 #' @param y List of vector of numerics for the data
 #' @param k Integer indicating the point at when the process should change from
@@ -105,10 +103,7 @@
 #'             value using the parameters.
 #'         \item If FALSE: Vector of the estimated parameters
 #'     }
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     computeTN.
+#' @noRd
 .estimateMaxLikelihood_array <- function(y, k, estim1, estim2, estim3, estim4,
                                          lower, upper, maxOptimIters=2,
                                          returnWithVal=FALSE){
@@ -123,7 +118,7 @@
 
   ## If it gets an extreme value, try re-running
   while(notDone && optimIters < maxOptimIters){
-    ov <- optim(par=estimates, k=k, y=y, N=length(y),
+    ov <- stats::optim(par=estimates, k=k, y=y, N=length(y),
                 fn = .L, method = "L-BFGS-B",#"CG",
                 control = list(fnscale = -1),#'CG'
                 lower = lower,  upper = upper)

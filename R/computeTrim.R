@@ -1,5 +1,5 @@
 
-#' Compute Trim
+#' Compute Amount of Data to Trim
 #'
 #' This is just a function to control how much is trimmed
 #'

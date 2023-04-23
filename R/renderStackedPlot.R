@@ -1,5 +1,4 @@
 
-
 #' Render Stacked Plot
 #'
 #' This function renders a stacked plot based on data and change points
@@ -19,25 +18,33 @@
 #' @export
 #'
 #' @examples
-#'  data <- UKcovid[UKcovid$nation=='Wales',c(2,3)]
-#'  data <- data[order(data$date),]
+#' \dontrun{
+#' data <- UKcovid[UKcovid$nation=='Wales',c(2,3)]
+#' data <- data[order(data$date),]
+#' }
 #'
-#'  result_Vost <- detectAllChangePoints(fullData=data,
-#'                         method='Vostrikova',
-#'                         lower=c(-Inf, 0, 10^-8, -Inf),
-#'                         upper=c(Inf, Inf, Inf, Inf),
-#'                         alpha=0.05, nStart=NA, nEnd=NA)
-#'  data_plot <- stackedPlot(trueData = data,
-#'                         parCPData = result_Vost[,c(1:2,7:10)],
-#'                         title = NULL, subtitle = NULL,
-#'                         dataName = nation, varPlots = FALSE)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5),
+#'                          k=100, burnin=1000,
+#'                          iterations=200)
+#'
+#' result_Vost <- detectAllChangePoints(fullData=data,
+#'                        method='Vostrikova',
+#'                        lower=c(-Inf, 0, 10^-8, -Inf),
+#'                        upper=c(Inf, Inf, Inf, Inf),
+#'                        alpha=0.05, nStart=NA, nEnd=NA)
+#' data_plot <- stackedPlot(trueData = data,
+#'                        parCPData = result_Vost[,c(1:2,7:10)],
+#'                        title = NULL, subtitle = NULL,
+#'                        dataName = nation, varPlots = FALSE)
 renderStackedPlot <- function(trueData, parCPData, title, subtitle,
                               varPlots = TRUE){
+  ## Done to remove notes
+  Date <- Value <- st <- b1 <- en <- v1 <- v2 <- NULL
+
   ## Setup Data
   colnames(trueData) <-  c('Date','Value')
   colnames(parCPData) <- c('st','en','b1','v1','v2')
   dataName <- 'ZZ' # Used to be asked, but with no displayable output, changed
-
 
   colors <- RColorBrewer::brewer.pal(5, 'Set1')
 

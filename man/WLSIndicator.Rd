@@ -27,7 +27,7 @@ Vector with values estimate, cutoff, and loc of max
 This function
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-                        iterations=1000)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+                        iterations=500)
 WLSIndicator(data)
 }

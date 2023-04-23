@@ -42,14 +42,14 @@
 #' @export
 #'
 #' @examples
-#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=500, burnin=1000,
-#'                         iterations=1000)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
+#'                         iterations=500)
 #'
-#' data1 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=500, burnin=1000,
-#'                          iterations=1000)
+#' data1 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=250, burnin=1000,
+#'                          iterations=500)
 #'
-#' data2 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=500, burnin=1000,
-#'                          iterations=1000,
+#' data2 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=250, burnin=1000,
+#'                          iterations=500,
 #'                          par1HetereoLocation=0.2,
 #'                          par1HetereoMult=2)
 generateRCA1Data <- function(pars, k, burnin, iterations,
@@ -115,7 +115,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 #' Check Non stationarity
 #'
 #' This (internal) function check if parameters (for normally distributed errors)
-#'     are in the stationary or nonstationary regime.
+#'     are in the stationary or nonstationary regime. See use in generateData.
 #'
 #' Upcoming: Check when non-normal. Simple mathematically, just need to get
 #'     around to it.
@@ -130,10 +130,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 #'     make influence user to choose different number.
 #'
 #' @return Boolean indicating if the process is nonstationary (T) or stationary (F)
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     generateData.
+#' @noRd
 .checkNonStationary <- function(pars, stationarySims, stationaryCutoff){
   ## Check for stationary
   #   stationary = E log|beta+e1|<0
@@ -141,7 +138,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
   stationaryValue <-
     mean(
       log(
-        abs(pars[1] + rnorm(stationarySims, mean=0, sd = sqrt(pars[2])))
+        abs(pars[1] + stats::rnorm(stationarySims, mean=0, sd = sqrt(pars[2])))
       )
     )
 
@@ -152,7 +149,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 #' Data Generation
 #'
 #' This (internal) function generates data according to an RCA process, using
-#'     the given parameters and information.
+#'     the given parameters and information. See use in generateData.
 #'
 #' @param pars Vector of parameters for the errors. The format is always similar,
 #'     c(beta1, p1, p2); however, p1 and p2 depend on the errorType.
@@ -183,10 +180,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 #'
 #' @return Vector with the sequence of RCA data of length iterations according
 #'     to the params
-#'
-#' @examples
-#' # This is an internal function and will not be viewable. See use in
-#' #     generateData.
+#' @noRd
 .dataGen  <- function(pars, burnin, iterations, errorType,
                      par1HetereoLocation, par1HetereoMult,
                      par2HetereoLocation, par2HetereoMult,
@@ -207,26 +201,26 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
     if(!is.na(par1HetereoLoc) &&
        par1HetereoLoc <= iters){
       eps1 <- c(
-        rnorm(par1HetereoLoc, mean=0,
+        stats::rnorm(par1HetereoLoc, mean=0,
               sd=sigma1),
-        rnorm(iters-par1HetereoLoc, mean=0,
+        stats::rnorm(iters-par1HetereoLoc, mean=0,
               sd=sigma1*sqrt(par1HetereoMult))
       )
     } else{
 
-      eps1 <- rnorm(iters, mean=0, sd=sigma1)
+      eps1 <- stats::rnorm(iters, mean=0, sd=sigma1)
     }
 
     if(!is.na(par2HetereoLoc) &&
        par2HetereoLoc <= iters){
       eps2 <- c(
-        rnorm(par2HetereoLoc, mean=0,
+        stats::rnorm(par2HetereoLoc, mean=0,
               sd=sigma2),
-        rnorm(iters-par2HetereoLoc, mean=0,
+        stats::rnorm(iters-par2HetereoLoc, mean=0,
               sd=sigma2*sqrt(par2HetereoMult))
       )
     }else{
-      eps2 <- rnorm(iters, mean=0, sd=sigma2)
+      eps2 <- stats::rnorm(iters, mean=0, sd=sigma2)
     }
 
   }else if(errorType=='Bernoulli'){
@@ -234,26 +228,26 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
     if(!is.na(par1HetereoLoc) &&
        par1HetereoLoc <= iters){
       eps1 <- c(
-        rbinom(n=par1HetereoLoc, size=1,
+        stats::rbinom(n=par1HetereoLoc, size=1,
                prob = pars[2]) - pars[2],
-        rbinom(n=iters-par1HetereoLoc, size=1,
+        stats::rbinom(n=iters-par1HetereoLoc, size=1,
                prob = pars[2]*par1HetereoMult) - pars[2]*par1HetereoMult
       )
 
     } else{
-      eps1 <- rbinom(n=iters, size=1, prob = pars[2]) - pars[2]
+      eps1 <- stats::rbinom(n=iters, size=1, prob = pars[2]) - pars[2]
     }
 
     if(!is.na(par2HetereoLoc) &&
        par2HetereoLoc <= iters){
       eps2 <- c(
-        rbinom(n=par2HetereoLoc, size=1,
+        stats::rbinom(n=par2HetereoLoc, size=1,
                prob = pars[3]) - pars[3],
-        rbinom(n=iters-par2HetereoLoc, size=1,
+        stats::rbinom(n=iters-par2HetereoLoc, size=1,
                prob = pars[3]*par2HetereoMult) - pars[3]*par2HetereoMult
       )
     }else{
-      eps2 <- rbinom(n=iters, size=1, prob = pars[3]) - pars[3]
+      eps2 <- stats::rbinom(n=iters, size=1, prob = pars[3]) - pars[3]
     }
 
   }else if(errorType=='Exponential'){
@@ -261,25 +255,25 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
     if(!is.na(par1HetereoLoc) &&
        par1HetereoLoc <= iters){
       eps1 <- c(
-        rexp(n=par1HetereoLoc,
+        stats::rexp(n=par1HetereoLoc,
              rate=pars[2]) - 1/pars[2],
-        rexp(n=iters-par1HetereoLoc,
+        stats::rexp(n=iters-par1HetereoLoc,
              rate=pars[2]*par1HetereoMult) - 1/(pars[2]*par1HetereoMult)
       )
     } else{
-      eps1 <- rexp(n=iters,rate=pars[2]) - 1/pars[2]
+      eps1 <- stats::rexp(n=iters,rate=pars[2]) - 1/pars[2]
     }
 
     if(!is.na(par2HetereoLoc) &&
        par2HetereoLoc <= iters){
       eps2 <- c(
-        rexp(n=par2HetereoLoc,
+        stats::rexp(n=par2HetereoLoc,
              rate=pars[3]) - 1/pars[3],
-        rexp(n=iters-par2HetereoLoc,
+        stats::rexp(n=iters-par2HetereoLoc,
              rate=pars[3]*par2HetereoMult) - 1/(pars[3]*par2HetereoMult)
       )
     } else{
-      eps2 <- rexp(n=iters,rate=pars[3]) - 1/pars[3]
+      eps2 <- stats::rexp(n=iters,rate=pars[3]) - 1/pars[3]
     }
 
   }else{

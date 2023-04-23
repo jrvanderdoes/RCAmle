@@ -1,9 +1,9 @@
 
 #' Compute TN
 #'
-#' This (internal) function computes a form of Tn (form 2.5), technically sqrt(TN)
+#' This (internal) function computes a form of Tn (form 2.5), technically sqrt(TN).
+#'  See for example compute3Methods.
 #'
-
 #' @param u Vector of numerics for the 4 parameters of interest, c(b1,s1^2,s2^2,b2).
 #'     This is an initial estimate
 #' @param y Vector of numerics for the data
@@ -36,10 +36,7 @@
 #'             sqrt Tn estimate, location of max Tn, and LNN.
 #'         \item If false: Vector with sqrt Tn estimate and loc of max Tn.
 #'     }
-#'
-#'
-#' @examples
-#' # This is an internal function. See for example compute3Methods.
+#' @noRd
 .computeTN <- function(u, y, N=length(y),
                        lower=c(-Inf,0,10^-8,-Inf), upper=c(Inf,Inf,Inf,Inf),
                        nStart=NA, nEnd=NA, returnEstims = FALSE,

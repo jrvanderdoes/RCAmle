@@ -1,5 +1,5 @@
 
-#' Liklihood
+#' Likelihood
 #'
 #' This (internal) function computes the liklihood, defined as 2.2 in the paper
 #'
@@ -8,9 +8,7 @@
 #'
 #' @return Vector of numerics indicating the liklihoods at each point (removing
 #'     uncomputable ones)
-#'
-#' @examples
-#' # This is an internal function.
+#' @noRd
 .l <- function(y,u){
 
   l <- rep(NA,length(y))
@@ -35,9 +33,7 @@
 #'     increase speed rather than calling length(y) each call.
 #'
 #' @return Numeric of log liklihood with change point k
-#'
-#' @examples
-#' # This is an internal function.
+#' @noRd
 .L <- function(u, k, y, N=length(y)){
 
   ## Second goes from k since drops first (so k+1:N)
@@ -63,9 +59,7 @@
 #'     increase speed rather than calling length(y) each call.
 #'
 #' @return Numeric of log liklihood with change point k
-#'
-#' @examples
-#' # This is an internal function.
+#' @noRd
 .L_array <- function(u1, u2, u3, u4, k, y, N = length(y)){
 
   y <- unlist(y)

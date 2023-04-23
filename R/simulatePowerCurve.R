@@ -43,10 +43,11 @@
 #' @export
 #'
 #' @examples
+#' # Run more simulations typically
 #' pc1 <- powerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
-#'                   nSims = 500, lowerEst = c(-Inf,0,10^-8,-Inf),
+#'                   nSims = 10, lowerEst = c(-Inf,0,10^-8,-Inf),
 #'                   upperEst = rep(Inf,4), alpha = 0.05,
-#'                   burnin = 1000, k = 0.5 * 400, N = 400,
+#'                   burnin = 1000, k = 0.5 * 100, N = 100,
 #'                   errorType = 'Normal', nStart = NA, nEnd = NA)
 simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                        alpha, burnin, k, N,
@@ -54,7 +55,8 @@ simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                        par1HetereoLocation=NA, par1HetereoMult=NA,
                        par2HetereoLocation=NA, par2HetereoMult=NA,
                        trimAmt=4, silent=FALSE){
-
+  ## Add to remove NOTES
+  ChangeSize <- MLE <- Vost <- WLS <- NULL
   nStart <- computeTrim(trimAmt,'Start', N)
   nEnd <- computeTrim(trimAmt,'End',N)
 

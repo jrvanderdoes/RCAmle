@@ -41,5 +41,6 @@ and ggplot2 plot.
 This simulates and draws the RCA(1) stationary region
 }
 \examples{
-dat <- simulateStationaryRegion()
+# More sims will get a smoother region
+dat <- simulateStationaryRegion(nSims=100)
 }

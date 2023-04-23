@@ -8,7 +8,7 @@ The data used in the analysis are all located in the related data folder--UK cov
 
 ## Installation
 
-You can install the development version of funkycells from
+You can install the development version of RCAmle from
 [GitHub](https://github.com/) with:
 
 ``` r

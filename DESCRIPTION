@@ -1,22 +1,30 @@
 Package: RCAmle
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+Title: Find Change Points in Random Coefficient Additive Models of Order One Using Maximum Likelihood Estimation
+Version: 1.0.1
+Authors@R: c(
+    person("Jeremy", "VanderDoes", , "jeremyvanderdoes@gmail.com", role = c("aut", "cre","cph"),
+           comment = c(ORCID = "0009-0001-9885-3073")),
+    person("Lajos", "Horvath", , "", role = c("aut")),
+    person("Lorenzo", "Trapani", , "", role = c("aut")))
+Description: Using maximum likelihood estimate (MLE) and optional finite sample corrections, detect change points in random coefficient additive models of order one (RCA(1)). Such models include estimating the beta and sigma values, and have been shown to be more accurate than using (weighted) least squares methods.
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
     ggplot2,
     patchwork,
-    RColorBrewer
+    RColorBrewer,
+    stats
 Depends: 
     R (>= 2.10)
 LazyData: true
 Suggests: 
+    dplyr,
+    kableExtra,
     knitr,
-    rmarkdown
+    magrittr,
+    rmarkdown,
+    tidyr
 VignetteBuilder: knitr
+URL: https://jrvanderdoes.github.io/RCAmle/

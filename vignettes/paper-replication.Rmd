@@ -154,10 +154,10 @@ housingDataList <- readRDS("housingDataList.rds")
 ```
 
 ```{r, plotHousingData_Boston, fig.cap = 'Daily US housing price indices in Boston.',fig.width = 5.5}
-housingDataList[[1]][[2]]
+knitr::include_graphics("boston.png") #housingDataList[[1]][[2]]
 ```
 ```{r, plotHousingData_LA, fig.cap = 'Daily US housing price indices in Los Angeles.',fig.width = 5.5}
-housingDataList[[2]][[2]]
+knitr::include_graphics("LA.png") #housingDataList[[2]][[2]]
 ```
 
 The UK covid-19 figures were built using the subsequent code.
@@ -194,14 +194,14 @@ UKCovidList <- readRDS("UKCovidList.rds")
 ```
 
 ```{r, plotUKCovidData_England, fig.cap = 'Daily Covid-19 patients hospitalised in England.',fig.width = 5.5}
-UKCovidList[[1]][[2]]
+knitr::include_graphics("England.png") #UKCovidList[[1]][[2]]
 ```
 ```{r, plotUKCovidData_NIreland, fig.cap = 'Daily Covid-19 patients hospitalised in Northern Ireland.',fig.width = 5.5}
-UKCovidList[[2]][[2]]
+knitr::include_graphics("NIreland.png") #UKCovidList[[2]][[2]]
 ```
 ```{r, plotUKCovidData_Scotland, fig.cap = 'Daily Covid-19 patients hospitalised in Scotland.',fig.width = 5.5}
-UKCovidList[[3]][[2]]
+knitr::include_graphics("Scotland.png") #UKCovidList[[3]][[2]]
 ```
 ```{r, plotUKCovidData_Wales, fig.cap = 'Daily Covid-19 patients hospitalised in Wales.',fig.width = 5.5}
-UKCovidList[[4]][[2]]
+knitr::include_graphics("Wales.png") #UKCovidList[[4]][[2]]
 ```

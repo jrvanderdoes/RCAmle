@@ -111,12 +111,18 @@ pc3 <- readRDS("pc3.rds")
 pc4 <- readRDS("pc4.rds")
 ```
 
-```{r, plotPowerCurves, fig.cap = 'Power curves as a function of the change in RCA coefficient.',fig.width = 5.5}
+```{r, plotPowerCurves1, fig.cap = 'Power curves as a function of the change in RCA coefficient (Figure 1).',fig.width = 5.5}
 # Saved for speed
 knitr::include_graphics("pc1.png") #pc1[[1]]
-knitr::include_graphics("pc1.png") #pc2[[1]]
-knitr::include_graphics("pc1.png") #pc3[[1]]
-knitr::include_graphics("pc1.png") #pc4[[1]]
+```
+```{r, plotPowerCurves2, fig.cap = 'Power curves as a function of the change in RCA coefficient (Figure 2).',fig.width = 5.5}
+knitr::include_graphics("pc2.png") #pc2[[1]]
+```
+```{r, plotPowerCurves3, fig.cap = 'Power curves as a function of the change in RCA coefficient (Figure 3).',fig.width = 5.5}
+knitr::include_graphics("pc3.png") #pc3[[1]]
+```
+```{r, plotPowerCurves4, fig.cap = 'Power curves as a function of the change in RCA coefficient (Figure 4).',fig.width = 5.5}
+knitr::include_graphics("pc4.png") #pc4[[1]]
 ```
 
 The US housing figures were built using the following code.

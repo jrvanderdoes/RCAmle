@@ -7,7 +7,7 @@
 \format{
 A data frame with 39,535 rows and 3 columns:
 \describe{
-\item{city}{City}
+\item{city}{US cityv}
 \item{date}{Date}
 \item{index}{Housing market index}
 }

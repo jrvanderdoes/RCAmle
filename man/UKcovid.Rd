@@ -7,9 +7,10 @@
 \format{
 A data frame with 2614 rows and 3 columns:
 \describe{
-\item{nation}{Nation}
+\item{nation}{Nation in the UK. Options are England, Northern Ireland,
+Scotland, and Wales.}
 \item{date}{Date}
-\item{cases}{NUmber of reported hospitalisations}
+\item{cases}{Number of reported hospitalisations}
 }
 }
 \source{

@@ -32,5 +32,5 @@ You can install the development version of RCAmle from [GitHub](https://github.c
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jrvanderdoes/RCAmlr")
+devtools::install_github("jrvanderdoes/RCAmle")
 ```

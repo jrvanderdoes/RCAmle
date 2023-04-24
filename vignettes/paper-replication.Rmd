@@ -24,6 +24,10 @@ library(RCAmle)
 `%>%` <- magrittr::`%>%`
 ```
 
+```{r extraSetup}
+library(ggplot2)
+```
+
 
 The stationary region was built using the following code.
 ```{r, stationaryRegion, eval=F}

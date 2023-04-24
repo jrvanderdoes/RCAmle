@@ -44,11 +44,12 @@
 #'
 #' @examples
 #' # Run more simulations typically
-#' pc1 <- powerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
+#' U4seq <- 0.5
+#' pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
 #'                   nSims = 10, lowerEst = c(-Inf,0,10^-8,-Inf),
 #'                   upperEst = rep(Inf,4), alpha = 0.05,
 #'                   burnin = 1000, k = 0.5 * 100, N = 100,
-#'                   errorType = 'Normal', nStart = NA, nEnd = NA)
+#'                   errorType = 'Normal', silent=TRUE)
 simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                        alpha, burnin, k, N,
                        errorType = 'Normal',

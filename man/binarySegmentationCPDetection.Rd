@@ -16,7 +16,7 @@ binarySegmentationCPDetection(
   maxOptimIters = 1,
   trimAmt = 4,
   verifyCPs = TRUE,
-  silent = F
+  silent = FALSE
 )
 }
 \arguments{
@@ -45,6 +45,8 @@ is NA. May not be used if estimVarLS.}
 \item{maxOptimIters}{(Optional) Numeric indicating number of times to re-try
 optimization. Can sometimes add if get randomly odd result. Default is 1.}
 
+\item{trimAmt}{(Optional) Number indicating the amount to trim. Default is 4.}
+
 \item{verifyCPs}{(Optional) Boolean indicating if change points should be
 rechecked at the end. Default is TRUE.}
 
@@ -63,8 +65,9 @@ estimate using MLE), 'MLE_v2' (var2 estimate using MLE), and 'MLE_b2'
 This function uses binary segmentation to detect change points.
 }
 \examples{
-data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
-                        iterations=500)
+data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=100, burnin=1000,
+                        iterations=200)
+data <- data.frame(1:length(data),data)
 binarySegmentationCPDetection(data,'Vostrikova',
                               lower=c(-Inf,0,10^-8,-Inf),
                               upper=c(Inf,Inf,Inf,Inf), alpha=0.05)

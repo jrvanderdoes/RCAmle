@@ -53,6 +53,8 @@ Default of NA sets no seed.}
 
 \item{silent}{(Optional) Boolean indicating if progress should be output.
 Default is FALSE}
+
+\item{trimAmt}{(Optional) Number indicating the amount to trim. Default is 4.}
 }
 \value{
 Data.frame of null rejection frequencies

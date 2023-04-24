@@ -19,6 +19,7 @@
 #'     is NA. May not be used if estimVarLS.
 #' @param maxOptimIters (Optional) Numeric indicating number of times to re-try
 #'     optimization. Can sometimes add if get randomly odd result. Default is 1.
+#' @param trimAmt (Optional) Number indicating the amount to trim. Default is 4.
 #' @param verifyCPs (Optional) Boolean indicating if change points should be
 #'     rechecked at the end. Default is TRUE.
 #' @param silent (Optional) Boolean indicating if output should be supressed.
@@ -33,8 +34,9 @@
 #' @export
 #'
 #' @examples
-#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=250, burnin=1000,
-#'                         iterations=500)
+#' data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5), k=100, burnin=1000,
+#'                         iterations=200)
+#' data <- data.frame(1:length(data),data)
 #' binarySegmentationCPDetection(data,'Vostrikova',
 #'                               lower=c(-Inf,0,10^-8,-Inf),
 #'                               upper=c(Inf,Inf,Inf,Inf), alpha=0.05)
@@ -47,7 +49,7 @@ binarySegmentationCPDetection <- function(fullData, method,
                                   maxOptimIters = 1,
                                   trimAmt = 4,
                                   verifyCPs = TRUE,
-                                  silent = F){
+                                  silent = FALSE){
 
   # Prepare
   fullData <- fullData[order(fullData[,1]),]
@@ -296,7 +298,7 @@ binarySegmentationCPDetection <- function(fullData, method,
     # Determine Method
     if(method == 'MLE'){
       result <-
-        MLEIndicator(u= rep(NA,4), data[(CPsVals[i]+1):CPsVals[i+2]],
+        MLEIndicator(u= rep(NA,4), y = data[(CPsVals[i]+1):CPsVals[i+2]],
                      lower=lower, upper=upper,
                      alpha = alpha,
                      nStart = nStart, nEnd=nEnd,
@@ -308,7 +310,7 @@ binarySegmentationCPDetection <- function(fullData, method,
 
     } else if(method == 'Vostrikova'){
       result <-
-        MLEVostIndicator(u= rep(NA,4), data[(CPsVals[i]+1):CPsVals[i+2]],
+        MLEVostIndicator(u= rep(NA,4), y = data[(CPsVals[i]+1):CPsVals[i+2]],
                          lower=lower, upper=upper,
                          alpha = alpha,
                          nStart = nStart, nEnd=nEnd,
@@ -320,7 +322,7 @@ binarySegmentationCPDetection <- function(fullData, method,
     } else if(method == 'WLS'){
       result <-
         WLSIndicator(y=data[(CPsVals[i]+1):CPsVals[i+2]],
-                     N=length(data[(CPsVals[i]+1):CPsVals[i+2]],),
+                     N=length(data[(CPsVals[i]+1):CPsVals[i+2]]),
                      alpha = alpha)
     } else {
       stop('Incorrect Method specified')

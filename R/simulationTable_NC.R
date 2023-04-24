@@ -24,6 +24,7 @@
 #'     Default of NA sets no seed.
 #' @param silent (Optional) Boolean indicating if progress should be output.
 #'     Default is FALSE
+#' @param trimAmt (Optional) Number indicating the amount to trim. Default is 4.
 #'
 #' @return Data.frame of null rejection frequencies
 #' @export

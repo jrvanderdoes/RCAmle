@@ -37,14 +37,17 @@ data <- data[order(data$date),]
 data <- generateRCA1Data(pars=c(0.5,1,0.25,-0.5),
                          k=100, burnin=1000,
                          iterations=200)
+data <- data.frame(1:length(data),data)
 
-result_Vost <- detectAllChangePoints(fullData=data,
+result_Vost <- binarySegmentationCPDetection(
+                       fullData=data,
                        method='Vostrikova',
                        lower=c(-Inf, 0, 10^-8, -Inf),
                        upper=c(Inf, Inf, Inf, Inf),
-                       alpha=0.05, nStart=NA, nEnd=NA)
-data_plot <- stackedPlot(trueData = data,
+                       alpha=0.05,
+                       silent = TRUE)
+data_plot <- renderStackedPlot(trueData = data,
                        parCPData = result_Vost[,c(1:2,7:10)],
                        title = NULL, subtitle = NULL,
-                       dataName = nation, varPlots = FALSE)
+                       varPlots = FALSE)
 }

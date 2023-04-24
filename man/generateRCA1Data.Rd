@@ -82,6 +82,6 @@ data1 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=250, burnin=1000,
 
 data2 <- generateRCA1Data(pars=c(1.1,1,0.25,-0.5), k=250, burnin=1000,
                          iterations=500,
-                         par1HetereoLocation=0.2,
+                         par1HetereoLocation=100,
                          par1HetereoMult=2)
 }

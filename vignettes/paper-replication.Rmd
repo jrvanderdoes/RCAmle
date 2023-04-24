@@ -33,7 +33,7 @@ data_sr <- simulateStationaryRegion(nSims = 10000000, silent=T)
 
 The results of that code includes the following figure.
 ```{r, loadStationaryRegion, echo=F}
-data_sr <- readRDS("./data_sr.rds")
+data_sr <- readRDS("data_sr.rds")
 ```
 
 ```{r, plotStationaryRegion, fig.cap = "Simulation stationary region using Gaussian error based on $E\\log |\\beta + \\epsilon_{0,1} |$",fig.width = 5.5}
@@ -53,7 +53,7 @@ data_er <- simulationTable_NC(betas = c(0.5,0.75,1,1.05),
 
 The results of that code is the following data.
 ```{r, loadEmpiricalRejection, echo=F}
-data_er <- readRDS("./data_er.RDS")
+data_er <- readRDS("data_er.rds")
 ```
 
 ```{r, tableStationaryRegion, fig.cap='Empiracal rejection frequencies under the null.'}
@@ -106,10 +106,10 @@ pc4 <- simulatePowerCurve(Us3 = c(0.5, 0.5, 0.5), U4s = U4seq,
 
 The resulting power figures are as follows (See the paper for details on each of the figures).
 ```{r, loadPowerCurves, echo=F}
-pc1 <- readRDS("./pc1.RDS")
-pc2 <- readRDS("./pc2.RDS")
-pc3 <- readRDS("./pc3.RDS")
-pc4 <- readRDS("./pc4.RDS")
+pc1 <- readRDS("pc1.rds")
+pc2 <- readRDS("pc2.rds")
+pc3 <- readRDS("pc3.rds")
+pc4 <- readRDS("pc4.rds")
 ```
 
 ```{r, plotPowerCurves, fig.cap = 'Power curves as a function of the change in RCA coefficient.',fig.width = 5.5}
@@ -150,7 +150,7 @@ for(city in c('Boston','LosAngeles')){
 
 The results were as follows.
 ```{r, loadHousingData, echo=F}
-housingDataList <- readRDS("./housingDataList.rds")
+housingDataList <- readRDS("housingDataList.rds")
 ```
 
 ```{r, plotHousingData_Boston, fig.cap = 'Daily US housing price indices in Boston.',fig.width = 5.5}
@@ -190,7 +190,7 @@ for(nation in c('England','Northern Ireland','Scotland','Wales')){
 
 With plots produced as follows.
 ```{r, loadUKCovidData, echo=F}
-UKCovidList <- readRDS("./UKCovidList.RDS")
+UKCovidList <- readRDS("UKCovidList.rds")
 ```
 
 ```{r, plotUKCovidData_England, fig.cap = 'Daily Covid-19 patients hospitalised in England.',fig.width = 5.5}

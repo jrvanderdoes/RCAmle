@@ -7,7 +7,7 @@ Authors@R: c(
     person("Lajos", "Horvath", , "", role = c("aut")),
     person("Lorenzo", "Trapani", , "", role = c("aut")))
 Description: Using maximum likelihood estimate (MLE) and optional finite sample corrections, detect change points in random coefficient additive models of order one (RCA(1)). Such models include estimating the beta and sigma values, and have been shown to be more accurate than using (weighted) least squares methods.
-License: GPL (>= 3) + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

@@ -25,7 +25,7 @@ library(RCAmle)
 ```
 
 Completing all trials is a computational burden. Consequently, the following 
-variable is set to 'TRUE', showing the code but loading results. Change to 
+variable is set to 'TRUE', showing the code but through loading results. Change to 
 'FALSE' to run all simulations.
 ```{r setMethod}
 quicklyRun <- TRUE
@@ -62,7 +62,7 @@ The results of that code is the following data.
 data_er <- readRDS("data_er.rds")
 ```
 
-```{r, tableStationaryRegion, fig.cap='(Table 3.1) Empiracal rejection frequencies under the null.'}
+```{r, tableStationaryRegion, fig.cap='(Table 3.1) Empirical rejection frequencies under the null.'}
 data_er$errType <- ifelse(data_er$errType=='Normal','N',
                           ifelse(data_er$errType=='Bernoulli','B','E'))
 tmp <- data_er %>%
@@ -157,7 +157,7 @@ for(city in c('Boston','LosAngeles')){
                                        method='Vostrikova',
                                        lower=c(-Inf, 0, 10^-8, -Inf),
                                        upper=c(Inf, Inf, Inf, Inf),
-                                       alpha=0.05, nStart=NA, nEnd=NA,
+                                       alpha=0.05,
                                        trimAmt = 10, silent = T )
   
   data_plot <- renderStackedPlot(trueData = data, 

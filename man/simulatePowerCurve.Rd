@@ -82,11 +82,9 @@ List with two terms.
 Simulate data, test for change using 3 methods, plot power curve
 }
 \examples{
-# Run more simulations typically
-U4seq <- 0.5
-pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
-                  nSims = 10, lowerEst = c(-Inf,0,10^-8,-Inf),
+pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = c(0,0.5),
+                  nSims = 5, lowerEst = c(-Inf,0,10^-8,-Inf),
                   upperEst = rep(Inf,4), alpha = 0.05,
-                  burnin = 1000, k = 0.5 * 100, N = 100,
-                  errorType = 'Normal', silent=TRUE)
+                  burnin = 500, k = 0.5 * 100, N = 100,
+                  errorType = 'Normal')
 }

@@ -32,7 +32,8 @@ Errors are always centered around 0
 \item{k}{Integer indicating the point at when the process should change from
 using beta1 to using beta2}
 
-\item{burnin}{Integer indicating the number of burnin iteration to use}
+\item{burnin}{Integer indicating the number of burn in iterations to use. If the
+model is non-stationary, then no burn ins will be used.}
 
 \item{iterations}{Integer indicating how many observations the final data
 should be.}

@@ -43,21 +43,18 @@
 #' @export
 #'
 #' @examples
-#' # Run more simulations typically
-#' U4seq <- 0.5
-#' pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = U4seq,
-#'                   nSims = 10, lowerEst = c(-Inf,0,10^-8,-Inf),
+#' pc1 <- simulatePowerCurve(Us3 = c(0, 0.5, 0.5), U4s = c(0,0.5),
+#'                   nSims = 5, lowerEst = c(-Inf,0,10^-8,-Inf),
 #'                   upperEst = rep(Inf,4), alpha = 0.05,
-#'                   burnin = 1000, k = 0.5 * 100, N = 100,
-#'                   errorType = 'Normal', silent=TRUE)
+#'                   burnin = 500, k = 0.5 * 100, N = 100,
+#'                   errorType = 'Normal')
 simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                        alpha, burnin, k, N,
                        errorType = 'Normal',
                        par1HetereoLocation=NA, par1HetereoMult=NA,
                        par2HetereoLocation=NA, par2HetereoMult=NA,
                        trimAmt=4, silent=FALSE){
-  ## Add to remove NOTES
-  ChangeSize <- MLE <- Vost <- WLS <- NULL
+
   nStart <- computeTrim(trimAmt,'Start', N)
   nEnd <- computeTrim(trimAmt,'End',N)
 
@@ -116,6 +113,9 @@ simulatePowerCurve <- function(Us3, U4s, nSims, lowerEst, upperEst,
                        sum(estims$WLSVal>estims$cutoff_ML)/nSims
     )
   }
+
+  # To remove warnings
+  ChangeSize <- MLE <- Vost <- WLS <- NULL
 
   plot <- ggplot2::ggplot(powerData)+
     ggplot2::geom_point(mapping=ggplot2::aes(x=ChangeSize,y=MLE, col='MLE'),

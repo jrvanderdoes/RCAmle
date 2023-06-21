@@ -79,8 +79,8 @@ supplement.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jrvanderdoes.github.io/RCAmle/">RCAmle</a></span><span class="op">)</span></span>
 <span><span class="va">`%&gt;%`</span> <span class="op">&lt;-</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="va">`%&gt;%`</span></span></code></pre></div>
 <p>Completing all trials is a computational burden. Consequently, the
-following variable is set to ‘TRUE’, showing the code but loading
-results. Change to ‘FALSE’ to run all simulations.</p>
+following variable is set to ‘TRUE’, showing the code but through
+loading results. Change to ‘FALSE’ to run all simulations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quicklyRun</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
 <p>The stationary region (Figure 3.1) was built using the following
@@ -756,7 +756,7 @@ code.</p>
 <span>                                       method<span class="op">=</span><span class="st">'Vostrikova'</span>,</span>
 <span>                                       lower<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">0</span>, <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">8</span>, <span class="op">-</span><span class="cn">Inf</span><span class="op">)</span>,</span>
 <span>                                       upper<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
-<span>                                       alpha<span class="op">=</span><span class="fl">0.05</span>, nStart<span class="op">=</span><span class="cn">NA</span>, nEnd<span class="op">=</span><span class="cn">NA</span>,</span>
+<span>                                       alpha<span class="op">=</span><span class="fl">0.05</span>,</span>
 <span>                                       trimAmt <span class="op">=</span> <span class="fl">10</span>, silent <span class="op">=</span> <span class="cn">T</span> <span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="va">data_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/renderStackedPlot.html">renderStackedPlot</a></span><span class="op">(</span>trueData <span class="op">=</span> <span class="va">data</span>, </span>

@@ -12,7 +12,8 @@
 #'     }
 #' @param k Integer indicating the point at when the process should change from
 #'     using beta1 to using beta2
-#' @param burnin Integer indicating the number of burnin iteration to use
+#' @param burnin Integer indicating the number of burn in iterations to use. If the
+#'   model is non-stationary, then no burn ins will be used.
 #' @param iterations Integer indicating how many observations the final data
 #'     should be.
 #' @param errorType String indicating the type of error. Options are 'Normal',
@@ -68,7 +69,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
     ## Check for stationary
     if(.checkNonStationary(pars, stationarySims, stationaryCutoff)){
       burnin <- 0
-      if(!silent) warning("Model nonstationary - No burnin used")
+      # if(!silent) warning("Model nonstationary - No burnin used")
     }
 
     ## Model Data Generations
@@ -88,7 +89,7 @@ generateRCA1Data <- function(pars, k, burnin, iterations,
 
   }else{
     ## Check for stationary
-    if(!silent) warning("Cannot verify stationarity for this error type")
+    # if(!silent) warning("Cannot verify stationarity for this error type")
 
     ## Model Data Generations
     H1 <- .dataGen(pars=pars[c(1,2,3)], burnin=burnin, iterations=k,

@@ -21,11 +21,11 @@ jobs:
         with:
           use-public-rspm: true
           
+      - name: Install rcmdcheck
+        run: Rscript -e "install.packages('rcmdcheck')"
+      
       - name: Setup R Enviroment
         uses: r-lib/actions/setup-renv@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
 
       # - uses: r-lib/actions/setup-r-dependencies@v2
       #   with:

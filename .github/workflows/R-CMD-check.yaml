@@ -21,8 +21,8 @@ jobs:
         with:
           use-public-rspm: true
           
-      - name: Install rcmdcheck
-        run: Rscript -e "install.packages('rcmdcheck')"
+      - name: Install some packages
+        run: Rscript -e "install.packages('rcmdcheck'); install.packages('knitr')"
       
       - name: Setup R Enviroment
         uses: r-lib/actions/setup-renv@v2

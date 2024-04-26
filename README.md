@@ -23,7 +23,15 @@ folder–UK covid data and US housing index data.
 
 ## Installation
 
-You can install the development version of RCAmle from
+You can install the released version of RCAmle from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jrvanderdoes/RCAmle@*release")
+```
+
+You can install the developmeny version of RCAmle from
 [GitHub](https://github.com/) with:
 
 ``` r

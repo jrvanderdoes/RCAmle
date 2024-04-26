@@ -86,6 +86,11 @@
       ],
       "Hash": "f20c47fd52fae58b4e377c37bb8c335b"
     },
+    "devtools": {
+      "Package": "devtools",
+      "Version": "2.4.5",
+      "Source": "Repository"
+    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",

@@ -24,6 +24,11 @@ jobs:
       # - name: Install some packages
       #   run: Rscript -e "install.packages('rcmdcheck'); install.packages('knitr')"
       
+      - name: Setup Pandoc Enviroment
+        uses: docker://pandoc/core:2.9
+        with:
+          args: "--help" # gets appended to pandoc command
+          
       - name: Setup R Enviroment
         uses: r-lib/actions/setup-renv@v2
 

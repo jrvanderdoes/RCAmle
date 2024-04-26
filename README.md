@@ -30,8 +30,13 @@ You can install the released version of RCAmle from
 # install.packages("devtools")
 devtools::install_github("jrvanderdoes/RCAmle@*release")
 ```
+or target a specific release with:
+``` r
+# install.packages("devtools")
+devtools::install_github("jrvanderdoes/RCAmle@v1.0.0")
+```
 
-You can install the developmeny version of RCAmle from
+You can also install the development version of RCAmle from
 [GitHub](https://github.com/) with:
 
 ``` r
